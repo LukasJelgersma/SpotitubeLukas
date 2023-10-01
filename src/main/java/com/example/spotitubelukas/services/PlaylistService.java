@@ -55,12 +55,7 @@ public class PlaylistService {
                 .add("length", 123445)
                 .build();
 
-        JsonObject json2 = Json.createObjectBuilder()
-                .add("token", "stinky")
-                .add("user", "poopie").build();
-
         // Convert the JSON object to a string and return it
-        //return Response.ok(json, MediaType.APPLICATION_JSON).build();
-        return Response.ok(json2, MediaType.APPLICATION_JSON).build();
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
 }

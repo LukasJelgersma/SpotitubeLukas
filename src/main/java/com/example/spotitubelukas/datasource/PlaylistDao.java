@@ -36,6 +36,7 @@ public class PlaylistDao {
             connection.close();
         } catch (SQLException e) {
             logger.severe("Error communicating with database:" + e);
+            System.out.println("SOMETHIN WENT WRONG " + e);
         }
 
         return playlists;
@@ -62,12 +63,13 @@ public class PlaylistDao {
             connection.close();
         } catch (SQLException e) {
             logger.severe("Error communicating with database: " + e);
+            System.out.println("SOMETHIN WENT WRONG " + e);
         }
         return tracks;
     }
 
 
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM playlists p JOIN users u ON p.owner = u.user WHERE u.user = ?";
-    private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracktoplaylist tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
+    private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
 
 }
