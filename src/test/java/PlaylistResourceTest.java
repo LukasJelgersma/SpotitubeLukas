@@ -46,6 +46,7 @@ public class PlaylistResourceTest {
         sut.getPlaylists(token);
         UserDTO userDTO = mockedUserService.getUserByToken(token);
 
+
         // Assert
         verify(mockedPlaylistService).getPlaylists(userDTO);
     }
@@ -58,8 +59,6 @@ public class PlaylistResourceTest {
 
         // Act
         Response response = mockedPlaylistService.getPlaylists(user);
-
-
 
         // Assert
         //CHECK IF THE OUTPUT OF GET PLAYLISTS EQUALS A JSON

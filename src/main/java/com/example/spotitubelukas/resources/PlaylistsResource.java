@@ -30,30 +30,30 @@ public class PlaylistsResource {
         this.userService = userService;
     }
 
-    @GET
-    @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
-    public Response addToken(String token){
-        return Response.created(
-               UriBuilder.fromPath("playlists/{token}").build(token)
-        ).build();
-    }
+//    @GET
+//    @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
+//    public Response addToken(String token){
+//        return Response.created(
+//               UriBuilder.fromPath("playlists/{token}").build(token)
+//        ).build();
+//    }
+//
+//    @GET
+//    @Path("/{token}")
+//    @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getPlaylists(@PathParam("token") String token) {
+//       UserDTO user = userService.getUserByToken(token);
+//       return playlistService.getPlaylists(user);
+//    }
 
     @GET
-    @Path("/{token}")
     @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlaylists(@PathParam("token") String token) {
-       UserDTO user = userService.getUserByToken(token);
-       return playlistService.getPlaylists(user);
+    public Response getPlaylists(String token) {
+        UserDTO user = userService.getUserByToken(token);
+        return playlistService.getPlaylists(user);
     }
-
-    //@GET
-    //@Consumes(MediaType.MEDIA_TYPE_WILDCARD)
-    //@Produces(MediaType.APPLICATION_JSON)
-    //public Response getPlaylists(String token) {
-    //    UserDTO user = userService.getUserByToken(token);
-    //    return playlistService.getPlaylists(user);
-    //}
 
 
 }

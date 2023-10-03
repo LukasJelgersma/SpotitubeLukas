@@ -16,7 +16,7 @@ public class UserDao {
 
     }
 
-    public void setUserToken(UserDTO user){
+    public void setUserToken(UserDTO user) {
         Connection connection;
         try {
             connection = DriverManager.getConnection(databaseProperties.connectionString());
@@ -41,7 +41,7 @@ public class UserDao {
         }
     }
 
-    public UserDTO getUserCredentials(String username){
+    public UserDTO getUserCredentials(String username) {
         UserDTO user = null;
         Connection connection;
         try {

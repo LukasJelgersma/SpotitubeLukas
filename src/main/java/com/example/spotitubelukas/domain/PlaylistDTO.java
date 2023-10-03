@@ -10,13 +10,11 @@ public class PlaylistDTO {
     private ArrayList<TrackDTO> tracks;
 
     public PlaylistDTO(int id, String name, String owner, ArrayList<TrackDTO> tracks){
-
-    }
-
-    public PlaylistDTO(int id, String name, String owner) {
         this.id = id;
         this.name = name;
         this.owner = owner;
+        this.tracks = tracks;
+
     }
 
     public int getId() {

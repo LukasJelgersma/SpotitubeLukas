@@ -2,9 +2,11 @@ package com.example.spotitubelukas.services;
 
 import com.example.spotitubelukas.datasource.PlaylistDao;
 import com.example.spotitubelukas.domain.PlaylistDTO;
+import com.example.spotitubelukas.domain.TrackDTO;
 import com.example.spotitubelukas.domain.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -12,17 +14,19 @@ import jakarta.json.JsonObject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import javax.xml.crypto.Data;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Default
 @ApplicationScoped
 public class PlaylistService {
 
-    private PlaylistDao playlistDao;
+    private PlaylistDao playlistDao = new PlaylistDao();
 
 
     public PlaylistService() {
-
     }
 
     public Response getPlaylists(UserDTO user) {
