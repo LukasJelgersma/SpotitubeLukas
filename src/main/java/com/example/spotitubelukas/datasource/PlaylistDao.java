@@ -36,7 +36,7 @@ public class PlaylistDao {
             connection.close();
         } catch (SQLException e) {
             logger.severe("Error communicating with database:" + e);
-            System.out.println("SOMETHIN WENT WRONG " + e);
+            throw new RuntimeException("Error communicating with the database", e);
         }
 
         return playlists;
