@@ -1,3 +1,4 @@
+import com.example.spotitubelukas.datasource.PlaylistDao;
 import com.example.spotitubelukas.domain.UserDTO;
 import com.example.spotitubelukas.resources.PlaylistsResource;
 import com.example.spotitubelukas.services.PlaylistService;
@@ -8,18 +9,27 @@ import org.h2.engine.User;
 import org.h2.util.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Mockito.*;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PlaylistResourceTest {
-
     private PlaylistsResource sut;
+    @InjectMocks
     private PlaylistService mockedPlaylistService;
+
+    @Mock
+    private PlaylistDao mockedPlaylistDao;
+
+    @InjectMocks
     private UserService mockedUserService;
+
 
 
     @BeforeEach
@@ -27,8 +37,7 @@ public class PlaylistResourceTest {
         this.sut = new PlaylistsResource();
 
         // Gebruik Mockito om een instantie te maken
-        this.mockedPlaylistService = Mockito.mock(PlaylistService.class);
-        this.mockedUserService = Mockito.mock(UserService.class);
+        MockitoAnnotations.openMocks(this);
 
         // Gebruik de setter om de mockedItemService te zetten
         this.sut.setPlaylistService(mockedPlaylistService);

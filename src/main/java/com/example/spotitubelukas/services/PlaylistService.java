@@ -32,9 +32,7 @@ public class PlaylistService {
 
     public Response getPlaylists(UserDTO user) {
 
-//        String username = user.getUsername();
-        String username = "lukas";
-        if(playlistDao == null) System.err.println("FUCK ME");
+        String username = user.getUsername();
         ArrayList<PlaylistDTO> playlists = playlistDao.getPlaylistInformation(username);
 
         // Create an empty JSON array for "playlists"
