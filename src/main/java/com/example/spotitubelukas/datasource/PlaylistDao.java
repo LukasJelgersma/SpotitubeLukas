@@ -5,17 +5,20 @@ import com.example.spotitubelukas.domain.PlaylistDTO;
 import com.example.spotitubelukas.domain.TrackDTO;
 import com.example.spotitubelukas.domain.UserDTO;
 import com.example.spotitubelukas.services.PlaylistService;
+import jakarta.enterprise.inject.Default;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
 
 public class PlaylistDao {
     private Logger logger = Logger.getLogger(getClass().getName());
     private ArrayList<PlaylistDTO> playlists;
     private ArrayList<TrackDTO> tracks;
     DatabaseProperties databaseProperties = new DatabaseProperties();
+
+    public PlaylistDao() {
+    }
 
     public ArrayList<PlaylistDTO> getPlaylistInformation(String username){
         Connection connection;

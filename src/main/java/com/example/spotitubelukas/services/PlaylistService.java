@@ -23,7 +23,8 @@ import java.util.Date;
 @ApplicationScoped
 public class PlaylistService {
 
-    private PlaylistDao playlistDao = new PlaylistDao();
+    @Inject
+    private PlaylistDao playlistDao;
 
 
     public PlaylistService() {
@@ -31,8 +32,9 @@ public class PlaylistService {
 
     public Response getPlaylists(UserDTO user) {
 
-        String username = user.getUsername();
-
+//        String username = user.getUsername();
+        String username = "lukas";
+        if(playlistDao == null) System.err.println("FUCK ME");
         ArrayList<PlaylistDTO> playlists = playlistDao.getPlaylistInformation(username);
 
         // Create an empty JSON array for "playlists"
@@ -62,4 +64,5 @@ public class PlaylistService {
         // Convert the JSON object to a string and return it
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
+
 }

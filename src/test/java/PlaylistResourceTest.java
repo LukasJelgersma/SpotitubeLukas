@@ -56,7 +56,6 @@ public class PlaylistResourceTest {
         // Arrange
         String token = "e7826f66-3791-44ad-a2b0-ed87132a6273";
         UserDTO user = new UserDTO("meron", "MySuperSecretPassword12341", "Meron Brouwer", token);
-
         // Act
         Response response = mockedPlaylistService.getPlaylists(user);
 
