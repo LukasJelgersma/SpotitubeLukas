@@ -1,7 +1,7 @@
 package com.example.spotitubelukas.datasource;
 
 import com.example.spotitubelukas.datasource.util.DatabaseProperties;
-import com.example.spotitubelukas.domain.UserDTO;
+import com.example.spotitubelukas.dto.UserDTO;
 
 import java.sql.*;
 import java.util.logging.Logger;
@@ -23,7 +23,7 @@ public class UserDao {
             PreparedStatement updateStatement = connection.prepareStatement(SQL_UPDATE_TOKEN);
 
             updateStatement.setString(1, user.getUsertoken());
-            updateStatement.setString(2, user.getUsername());
+            updateStatement.setString(2, user.getUser());
 
             // Execute the update statement
             int rowsAffected = updateStatement.executeUpdate();
@@ -71,7 +71,7 @@ public class UserDao {
             connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement addStatement = connection.prepareStatement(SQL_INSERT);
 
-            addStatement.setString(1, user.getUsername());
+            addStatement.setString(1, user.getUser());
             addStatement.setString(2, user.getPassword());
 
             addStatement.execute();

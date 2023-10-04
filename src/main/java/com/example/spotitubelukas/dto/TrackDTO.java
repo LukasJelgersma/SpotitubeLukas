@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.domain;
+package com.example.spotitubelukas.dto;
 
 import java.util.Date;
 

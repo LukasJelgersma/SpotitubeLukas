@@ -1,26 +1,29 @@
-package com.example.spotitubelukas.domain;
+package com.example.spotitubelukas.dto;
 
 public class UserDTO {
 
-    private String username;
+    private String user;
     private String password;
     private String name;
     private String usertoken;
 
-
-    public UserDTO(String username, String password, String name, String usertoken){
-        this.username = username;
+    public UserDTO(String user, String password, String name, String usertoken){
+        this.user = user;
         this.password = password;
         this.name = name;
         this.usertoken = usertoken;
     }
 
-    public String getUsername() {
-        return username;
+    public UserDTO(){
+
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getPassword() {
@@ -50,7 +53,7 @@ public class UserDTO {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", usertoken='" + usertoken + '\'' +

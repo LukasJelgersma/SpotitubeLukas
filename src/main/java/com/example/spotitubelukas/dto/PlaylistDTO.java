@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.domain;
+package com.example.spotitubelukas.dto;
 
 import java.util.ArrayList;
 
@@ -6,14 +6,13 @@ public class PlaylistDTO {
 
     private int id;
     private String name;
-    private String owner;
+    private boolean owner;
     private ArrayList<TrackDTO> tracks;
 
-    public PlaylistDTO(int id, String name, String owner, ArrayList<TrackDTO> tracks){
+    public PlaylistDTO(int id, String name, boolean owner){
         this.id = id;
         this.name = name;
         this.owner = owner;
-        this.tracks = tracks;
 
     }
 
@@ -33,11 +32,11 @@ public class PlaylistDTO {
         this.name = name;
     }
 
-    public String getOwner() {
+    public boolean isOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(boolean owner) {
         this.owner = owner;
     }
 
@@ -47,15 +46,5 @@ public class PlaylistDTO {
 
     public void setTracks(ArrayList<TrackDTO> tracks) {
         this.tracks = tracks;
-    }
-
-    @Override
-    public String toString() {
-        return "PlaylistDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", owner='" + owner + '\'' +
-                ", tracks=" + tracks +
-                '}';
     }
 }

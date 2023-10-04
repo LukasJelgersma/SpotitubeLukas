@@ -1,29 +1,30 @@
 package com.example.spotitubelukas.datasource;
 
 import com.example.spotitubelukas.datasource.util.DatabaseProperties;
-import com.example.spotitubelukas.domain.PlaylistDTO;
-import com.example.spotitubelukas.domain.TrackDTO;
-import com.example.spotitubelukas.domain.UserDTO;
-import com.example.spotitubelukas.services.PlaylistService;
+import com.example.spotitubelukas.dto.PlaylistDTO;
+import com.example.spotitubelukas.dto.TrackDTO;
+import com.example.spotitubelukas.dto.response.PlaylistResponseDTO;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Default;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Logger;
-
+@Default
+@ApplicationScoped
 public class PlaylistDao {
     private Logger logger = Logger.getLogger(getClass().getName());
-    private ArrayList<PlaylistDTO> playlists;
-    private ArrayList<TrackDTO> tracks;
+    private ArrayList<PlaylistDTO> playlists = new ArrayList<>();
+    private ArrayList<TrackDTO> tracks = new ArrayList<>();
     DatabaseProperties databaseProperties = new DatabaseProperties();
 
     public PlaylistDao() {
     }
 
-    public ArrayList<PlaylistDTO> getPlaylistInformation(String username){
+    public PlaylistResponseDTO getPlaylistInformation(String username){
         Connection connection;
-        playlists = new ArrayList<>();
-
         try {
             connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatement = connection.prepareStatement(SQL_SELECT_PLAYLIST_ALL);
@@ -32,14 +33,11 @@ public class PlaylistDao {
 
             ResultSet resultSet = selectStatement.executeQuery();
             while (resultSet.next()) {
-                ArrayList<TrackDTO> tracks = getAllTracks(resultSet.getInt("id"), connection);
+                tracks = getAllTracks(resultSet.getInt("id"), connection);
 
                 PlaylistDTO playlistDTO = new PlaylistDTO(resultSet.getInt("id"),
                         resultSet.getString("name"),
-                        resultSet.getString("owner"),
-                        tracks);
-
-
+                        Objects.equals(username, resultSet.getString("owner")));
                 playlists.add(playlistDTO);
             }
 
@@ -49,7 +47,7 @@ public class PlaylistDao {
             logger.severe("Error communicating with database:" + e);
         }
 
-        return playlists;
+        return new PlaylistResponseDTO(playlists, 1412);
     }
 
     public ArrayList<TrackDTO> getAllTracks(int playlistId, Connection connection){
