@@ -30,6 +30,7 @@ public class PlaylistsResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(@QueryParam("token") String token, PlaylistDTO playlistDTO){
         UserDTO user = userService.getUserByToken(token);
@@ -39,8 +40,21 @@ public class PlaylistsResource {
                 .build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") int id, PlaylistDTO playlistDTO){
+        UserDTO user = userService.getUserByToken(token);
+        return Response
+                .status(200)
+                .entity(playlistService.editPlaylist(user, id, playlistDTO))
+                .build();
+    }
+
     @DELETE
     @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") int id){
         UserDTO user = userService.getUserByToken(token);

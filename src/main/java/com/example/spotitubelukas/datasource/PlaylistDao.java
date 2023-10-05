@@ -115,10 +115,30 @@ public class PlaylistDao {
 
     }
 
+    public void editPlaylist(String username, int id, PlaylistDTO playlistDTO){
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement deleteStatement = connection.prepareStatement(SQL_EDIT_PLAYLIST);
+
+            deleteStatement.setString(1, playlistDTO.getName());
+            deleteStatement.setString(2, username);
+            deleteStatement.setInt(3, id);
+
+            deleteStatement.execute();
+
+            deleteStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database:" + e);
+        }
+    }
+
 
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM spotitube.playlists p JOIN spotitube.users u ON p.owner = u.user WHERE u.user = ?";
     private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
     private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
     private static final String SQL_DELETE_PLAYLIST = "DELETE FROM playlists WHERE (owner = ?) AND (id = ?)";
+    private static final String SQL_EDIT_PLAYLIST = "UPDATE playlists SET name = ? WHERE (owner = ?) AND (id = ?)";
 
 }

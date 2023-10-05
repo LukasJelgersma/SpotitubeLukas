@@ -50,4 +50,12 @@ public class PlaylistService {
 
         return playlistDao.getPlaylistInformation(username);
     }
+
+    public PlaylistResponseDTO editPlaylist(UserDTO user, int id, PlaylistDTO playlistDTO){
+        String username = user.getUser();
+
+        playlistDao.editPlaylist(username, id, playlistDTO);
+
+        return playlistDao.getPlaylistInformation(username);
+    }
 }
