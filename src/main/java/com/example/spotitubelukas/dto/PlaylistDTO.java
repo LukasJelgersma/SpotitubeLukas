@@ -13,6 +13,9 @@ public class PlaylistDTO {
         this.id = id;
         this.name = name;
         this.owner = owner;
+    }
+
+    public PlaylistDTO(){
 
     }
 

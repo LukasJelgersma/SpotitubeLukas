@@ -77,8 +77,48 @@ public class PlaylistDao {
         return tracks;
     }
 
+    public void addPlaylist(String username, PlaylistDTO playlistDTO){
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement insertStatement = connection.prepareStatement(SQL_INSERT_PLAYLIST);
+
+            insertStatement.setString(1, playlistDTO.getName());
+            insertStatement.setString(2, username);
+
+            insertStatement.execute();
+
+            insertStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database:" + e);
+        }
+
+    }
+
+    public void deletePlaylist(String username, int id){
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement deleteStatement = connection.prepareStatement(SQL_DELETE_PLAYLIST);
+
+            deleteStatement.setString(1, username);
+            deleteStatement.setInt(2, id);
+
+            deleteStatement.execute();
+
+            deleteStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database:" + e);
+        }
+
+    }
+
 
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM spotitube.playlists p JOIN spotitube.users u ON p.owner = u.user WHERE u.user = ?";
     private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
+    private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
+    private static final String SQL_DELETE_PLAYLIST = "DELETE FROM playlists WHERE (owner = ?) AND (id = ?)";
 
 }

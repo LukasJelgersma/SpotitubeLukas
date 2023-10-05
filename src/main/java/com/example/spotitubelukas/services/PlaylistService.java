@@ -35,4 +35,19 @@ public class PlaylistService {
         return playlistDao.getPlaylistInformation(username);
     }
 
+    public PlaylistResponseDTO addPlaylist(UserDTO user, PlaylistDTO playlistDTO) {
+        String username = user.getUser();
+
+        playlistDao.addPlaylist(username, playlistDTO);
+
+        return playlistDao.getPlaylistInformation(username);
+    }
+
+    public PlaylistResponseDTO deletePlaylist(UserDTO user, int id){
+        String username = user.getUser();
+
+        playlistDao.deletePlaylist(username, id);
+
+        return playlistDao.getPlaylistInformation(username);
+    }
 }
