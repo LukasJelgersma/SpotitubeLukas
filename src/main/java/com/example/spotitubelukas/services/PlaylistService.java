@@ -4,21 +4,19 @@ import com.example.spotitubelukas.datasource.PlaylistDao;
 import com.example.spotitubelukas.dto.PlaylistDTO;
 import com.example.spotitubelukas.dto.UserDTO;
 import com.example.spotitubelukas.dto.response.PlaylistResponseDTO;
+import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
-import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonArrayBuilder;
-import jakarta.json.JsonObject;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Default
 @ApplicationScoped
 public class PlaylistService {
+    private List<PlaylistDTO> playlists = new ArrayList<>();
 
     @Inject
     private PlaylistDao playlistDao;
@@ -31,8 +29,10 @@ public class PlaylistService {
 
 
         String username = user.getUser();
+        PlaylistResponseDTO playlistResponseDTO = playlistDao.getPlaylistResponse(username);
+        playlists.addAll(playlistResponseDTO.getPlaylists());
         // Convert the JSON object to a string and return it
-        return playlistDao.getPlaylistInformation(username);
+        return playlistDao.getPlaylistResponse(username);
     }
 
     public PlaylistResponseDTO addPlaylist(UserDTO user, PlaylistDTO playlistDTO) {
@@ -40,7 +40,7 @@ public class PlaylistService {
 
         playlistDao.addPlaylist(username, playlistDTO);
 
-        return playlistDao.getPlaylistInformation(username);
+        return playlistDao.getPlaylistResponse(username);
     }
 
     public PlaylistResponseDTO deletePlaylist(UserDTO user, int id){
@@ -48,7 +48,7 @@ public class PlaylistService {
 
         playlistDao.deletePlaylist(username, id);
 
-        return playlistDao.getPlaylistInformation(username);
+        return playlistDao.getPlaylistResponse(username);
     }
 
     public PlaylistResponseDTO editPlaylist(UserDTO user, int id, PlaylistDTO playlistDTO){
@@ -56,11 +56,17 @@ public class PlaylistService {
 
         playlistDao.editPlaylist(username, id, playlistDTO);
 
-        return playlistDao.getPlaylistInformation(username);
+        return playlistDao.getPlaylistResponse(username);
     }
 
-    public PlaylistDTO getPlaylistById(UserDTO user, int id){
-        String username = user.getUser();
-
+    public PlaylistDTO getPlaylistById(int id){
+        Optional<PlaylistDTO> requestedPlaylist = playlists.stream()
+                .filter(playlistDto -> playlistDto.getId() == id)
+                .findFirst();
+        if(requestedPlaylist.isPresent()){
+            return requestedPlaylist.get();
+        } else {
+            throw new UserNotAvailableException();
+        }
     }
 }

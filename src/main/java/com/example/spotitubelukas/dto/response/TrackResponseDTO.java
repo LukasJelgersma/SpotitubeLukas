@@ -11,6 +11,10 @@ public class TrackResponseDTO {
 
     }
 
+    public TrackResponseDTO(ArrayList<TrackDTO> tracks) {
+        this.tracks = tracks;
+    }
+
     public ArrayList<TrackDTO> getTracks() {
         return tracks;
     }

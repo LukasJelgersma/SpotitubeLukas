@@ -50,4 +50,6 @@ public class PlaylistDTO {
     public void setTracks(ArrayList<TrackDTO> tracks) {
         this.tracks = tracks;
     }
+
+
 }

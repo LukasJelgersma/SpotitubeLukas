@@ -10,9 +10,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import javax.sound.midi.Track;
-
-@Path("/playlists")
+@Path("/tracks")
 public class TrackResource {
 
     @Inject
@@ -24,15 +22,14 @@ public class TrackResource {
     private TrackService trackService;
 
     @GET
-    @Path("/{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTracks(@QueryParam("token") String token, @PathParam("id") int id) {
+    public Response getTracks(@QueryParam("token") String token, @QueryParam("forPlaylist") int id) {
         UserDTO user = userService.getUserByToken(token);
-        PlaylistDTO playlistDTO = playlistService.getPlaylists(user);
+        PlaylistDTO playlistDTO = playlistService.getPlaylistById(id);
 
         return Response
                 .status(200)
-                .entity(trackService.getTracks(id, ))
+                .entity(trackService.getAllAvailableTracks(playlistDTO))
                 .build();
     }
 

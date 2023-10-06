@@ -5,7 +5,6 @@ import com.example.spotitubelukas.dto.PlaylistDTO;
 import com.example.spotitubelukas.dto.TrackDTO;
 import com.example.spotitubelukas.dto.response.PlaylistResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Default;
 
 import java.sql.*;
@@ -22,7 +21,7 @@ public class PlaylistDao {
     public PlaylistDao() {
     }
 
-    public PlaylistResponseDTO getPlaylistInformation(String username){
+    public PlaylistResponseDTO getPlaylistResponse(String username){
         ArrayList<PlaylistDTO> playlists = new ArrayList<>();
 
         Connection connection;
@@ -37,6 +36,7 @@ public class PlaylistDao {
                 PlaylistDTO playlistDTO = new PlaylistDTO(resultSet.getInt("id"),
                         resultSet.getString("name"),
                         Objects.equals(username, resultSet.getString("owner")));
+                playlistDTO.setTracks(tracks);
                 playlists.add(playlistDTO);
             }
 
@@ -132,8 +132,6 @@ public class PlaylistDao {
             logger.severe("Error communicating with database:" + e);
         }
     }
-
-
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM playlists";
     private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
     private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlists (name, owner) VALUES (?, ?)";

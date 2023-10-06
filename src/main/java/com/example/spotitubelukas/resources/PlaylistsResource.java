@@ -3,8 +3,8 @@ package com.example.spotitubelukas.resources;
 import com.example.spotitubelukas.dto.PlaylistDTO;
 import com.example.spotitubelukas.dto.UserDTO;
 import com.example.spotitubelukas.services.PlaylistService;
+import com.example.spotitubelukas.services.TrackService;
 import com.example.spotitubelukas.services.UserService;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -18,6 +18,9 @@ public class PlaylistsResource {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private TrackService trackService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,6 +64,19 @@ public class PlaylistsResource {
         return Response
                 .status(200)
                 .entity(playlistService.deletePlaylist(user, id))
+                .build();
+    }
+
+    @GET
+    @Path("/{id}/tracks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTracks(@QueryParam("token") String token, @PathParam("id") int id) {
+        UserDTO user = userService.getUserByToken(token);
+        PlaylistDTO playlistDTO = playlistService.getPlaylistById(id);
+
+        return Response
+                .status(200)
+                .entity(trackService.getPlaylistTracks(playlistDTO))
                 .build();
     }
 }
