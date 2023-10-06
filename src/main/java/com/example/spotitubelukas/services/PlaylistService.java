@@ -58,4 +58,9 @@ public class PlaylistService {
 
         return playlistDao.getPlaylistInformation(username);
     }
+
+    public PlaylistDTO getPlaylistById(UserDTO user, int id){
+        String username = user.getUser();
+
+    }
 }

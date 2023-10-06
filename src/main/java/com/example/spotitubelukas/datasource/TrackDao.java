@@ -9,7 +9,7 @@ public class TrackDao {
 
     DatabaseProperties databaseProperties = new DatabaseProperties();
 
-    public void getTrackInfo(int trackId){
+    public void getTracks(int trackId){
 
     }
 }

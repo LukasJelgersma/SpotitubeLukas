@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PlaylistDao {
     private Logger logger = Logger.getLogger(getClass().getName());
-    private ArrayList<PlaylistDTO> playlists = new ArrayList<>();
     private ArrayList<TrackDTO> tracks = new ArrayList<>();
     DatabaseProperties databaseProperties = new DatabaseProperties();
 
@@ -24,12 +23,12 @@ public class PlaylistDao {
     }
 
     public PlaylistResponseDTO getPlaylistInformation(String username){
+        ArrayList<PlaylistDTO> playlists = new ArrayList<>();
+
         Connection connection;
         try {
             connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatement = connection.prepareStatement(SQL_SELECT_PLAYLIST_ALL);
-
-            selectStatement.setString(1, username);
 
             ResultSet resultSet = selectStatement.executeQuery();
             while (resultSet.next()) {
@@ -86,7 +85,7 @@ public class PlaylistDao {
             insertStatement.setString(1, playlistDTO.getName());
             insertStatement.setString(2, username);
 
-            insertStatement.execute();
+            insertStatement.executeUpdate();
 
             insertStatement.close();
             connection.close();
@@ -105,7 +104,7 @@ public class PlaylistDao {
             deleteStatement.setString(1, username);
             deleteStatement.setInt(2, id);
 
-            deleteStatement.execute();
+            deleteStatement.executeUpdate();
 
             deleteStatement.close();
             connection.close();
@@ -125,7 +124,7 @@ public class PlaylistDao {
             deleteStatement.setString(2, username);
             deleteStatement.setInt(3, id);
 
-            deleteStatement.execute();
+            deleteStatement.executeUpdate();
 
             deleteStatement.close();
             connection.close();
@@ -135,7 +134,7 @@ public class PlaylistDao {
     }
 
 
-    private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM spotitube.playlists p JOIN spotitube.users u ON p.owner = u.user WHERE u.user = ?";
+    private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM playlists";
     private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
     private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
     private static final String SQL_DELETE_PLAYLIST = "DELETE FROM playlists WHERE (owner = ?) AND (id = ?)";
