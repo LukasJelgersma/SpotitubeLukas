@@ -25,6 +25,10 @@ public class TrackDTO {
         this.offlineAvailable = offlineAvailable;
     }
 
+    public TrackDTO(){
+
+    }
+
     public int getId() {
         return id;
     }

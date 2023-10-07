@@ -4,6 +4,7 @@ import com.example.spotitubelukas.datasource.util.DatabaseProperties;
 import com.example.spotitubelukas.dto.PlaylistDTO;
 import com.example.spotitubelukas.dto.TrackDTO;
 import com.example.spotitubelukas.dto.response.PlaylistResponseDTO;
+import com.example.spotitubelukas.dto.response.TrackResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 
@@ -15,7 +16,6 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PlaylistDao {
     private Logger logger = Logger.getLogger(getClass().getName());
-    private ArrayList<TrackDTO> tracks = new ArrayList<>();
     DatabaseProperties databaseProperties = new DatabaseProperties();
 
     public PlaylistDao() {
@@ -31,6 +31,7 @@ public class PlaylistDao {
 
             ResultSet resultSet = selectStatement.executeQuery();
             while (resultSet.next()) {
+                ArrayList<TrackDTO> tracks;
                 tracks = getAllTracks(resultSet.getInt("id"), connection);
 
                 PlaylistDTO playlistDTO = new PlaylistDTO(resultSet.getInt("id"),
@@ -50,7 +51,7 @@ public class PlaylistDao {
     }
 
     public ArrayList<TrackDTO> getAllTracks(int playlistId, Connection connection){
-        tracks = new ArrayList<>();
+        ArrayList<TrackDTO> tracks = new ArrayList<>();
         try {
             PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_SELECT_TRACKS_ALL);
 
@@ -132,10 +133,32 @@ public class PlaylistDao {
             logger.severe("Error communicating with database:" + e);
         }
     }
+
+    public void addTrackToPlaylist(int id, TrackDTO trackDTO){
+        Connection connection;
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement insertStatement = connection.prepareStatement(SQL_ADD_TRACK_PLAYLIST);
+
+            insertStatement.setInt(1, trackDTO.getId());
+            insertStatement.setInt(2, id);
+
+            insertStatement.executeUpdate();
+
+            insertStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database:" + e);
+        }
+    }
+
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM playlists";
     private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
     private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
     private static final String SQL_DELETE_PLAYLIST = "DELETE FROM playlists WHERE (owner = ?) AND (id = ?)";
     private static final String SQL_EDIT_PLAYLIST = "UPDATE playlists SET name = ? WHERE (owner = ?) AND (id = ?)";
+    private static final String SQL_ADD_TRACK_PLAYLIST = "INSERT INTO tracksinplaylists (trackid, playlistid) VALUES (?, ?)";
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.spotitubelukas.resources;
 
 import com.example.spotitubelukas.dto.PlaylistDTO;
+import com.example.spotitubelukas.dto.TrackDTO;
 import com.example.spotitubelukas.dto.UserDTO;
 import com.example.spotitubelukas.services.PlaylistService;
 import com.example.spotitubelukas.services.TrackService;
@@ -77,6 +78,16 @@ public class PlaylistsResource {
         return Response
                 .status(200)
                 .entity(trackService.getPlaylistTracks(playlistDTO))
+                .build();
+    }
+
+    @POST
+    @Path("{id}/tracks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addTrack(@QueryParam("token") String token, @PathParam("id") int id, TrackDTO trackDTO){
+        return Response
+                .status(200)
+                .entity(playlistService.addTrackToPlaylist(id, trackDTO))
                 .build();
     }
 }

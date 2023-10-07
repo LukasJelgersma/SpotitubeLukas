@@ -2,8 +2,10 @@ package com.example.spotitubelukas.services;
 
 import com.example.spotitubelukas.datasource.PlaylistDao;
 import com.example.spotitubelukas.dto.PlaylistDTO;
+import com.example.spotitubelukas.dto.TrackDTO;
 import com.example.spotitubelukas.dto.UserDTO;
 import com.example.spotitubelukas.dto.response.PlaylistResponseDTO;
+import com.example.spotitubelukas.dto.response.TrackResponseDTO;
 import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
@@ -57,6 +59,16 @@ public class PlaylistService {
         playlistDao.editPlaylist(username, id, playlistDTO);
 
         return playlistDao.getPlaylistResponse(username);
+    }
+
+    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO){
+
+        playlistDao.addTrackToPlaylist(id, trackDTO);
+
+        PlaylistDTO playlistDTO = getPlaylistById(id);
+
+
+        return new TrackResponseDTO(playlistDTO.getTracks());
     }
 
     public PlaylistDTO getPlaylistById(int id){
