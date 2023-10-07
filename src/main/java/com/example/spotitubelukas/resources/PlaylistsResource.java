@@ -92,10 +92,10 @@ public class PlaylistsResource {
     }
 
     @DELETE
-    @Path("/{id}/tracks/{id}")
+    @Path("/{playlistId}/tracks/{trackId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteTrack(@QueryParam("token") String token, @PathParam("id") int trackId, @PathParam("id") int playlistId){
+    public Response deleteTrack(@QueryParam("token") String token, @PathParam("trackId") int trackId, @PathParam("playlistId") int playlistId){
         UserDTO user = userService.getUserByToken(token);
         return Response
                 .status(200)
