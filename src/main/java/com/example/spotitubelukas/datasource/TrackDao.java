@@ -47,7 +47,37 @@ public class TrackDao {
         return new TrackResponseDTO(tracks);
     }
 
+    public TrackDTO getTrack(int trackId){
+        Connection connection;
+        TrackDTO track = null;
+
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_GET_TRACK);
+
+            selectStatementTrack.setInt(1, trackId);
+
+            ResultSet resultSet = selectStatementTrack.executeQuery();
+            while (resultSet.next()){
+                track = new TrackDTO(resultSet.getInt("id"),
+                        resultSet.getString("title"), resultSet.getString("performer"),
+                        resultSet.getInt("duration"), resultSet.getString("album"),
+                        resultSet.getInt("playcount"), resultSet.getDate("publicationDate"),
+                        resultSet.getString("description"),
+                        resultSet.getBoolean("offlineAvailable"));
+            }
+
+            selectStatementTrack.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database: " + e);
+        }
+        return track;
+    }
+
     private static final String SQL_GET_AVAILABLE_TRACK = "SELECT t.* FROM spotitube.tracks t LEFT JOIN" +
             " spotitube.tracksinplaylists tp ON t.id = tp.trackid AND" +
             " tp.playlistid = ? WHERE tp.trackid IS NULL";
+
+    private static final String SQL_GET_TRACK = "SELECT * FROM tracks WHERE id = ?";
 }

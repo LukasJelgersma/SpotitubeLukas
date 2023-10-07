@@ -1,6 +1,7 @@
 package com.example.spotitubelukas.services;
 
 import com.example.spotitubelukas.datasource.PlaylistDao;
+import com.example.spotitubelukas.datasource.TrackDao;
 import com.example.spotitubelukas.dto.PlaylistDTO;
 import com.example.spotitubelukas.dto.TrackDTO;
 import com.example.spotitubelukas.dto.UserDTO;
@@ -22,6 +23,9 @@ public class PlaylistService {
 
     @Inject
     private PlaylistDao playlistDao;
+
+    @Inject
+    private TrackService trackService;
 
 
     public PlaylistService() {
@@ -67,6 +71,24 @@ public class PlaylistService {
 
         PlaylistDTO playlistDTO = getPlaylistById(id);
 
+        playlistDTO.getTracks().add(trackDTO);
+
+        return new TrackResponseDTO(playlistDTO.getTracks());
+    }
+
+    public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId){
+
+        playlistDao.removeTrackFromPlaylist(trackId, playlistId);
+
+        PlaylistDTO playlistDTO = getPlaylistById(playlistId);
+
+        List<TrackDTO> tracks = playlistDTO.getTracks();
+        for (TrackDTO track : tracks) {
+            if (track.getId() == trackId) {
+                tracks.remove(track);
+                break; // Exit the loop after removing the track
+            }
+        }
 
         return new TrackResponseDTO(playlistDTO.getTracks());
     }

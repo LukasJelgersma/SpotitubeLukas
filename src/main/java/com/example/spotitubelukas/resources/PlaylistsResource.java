@@ -90,4 +90,16 @@ public class PlaylistsResource {
                 .entity(playlistService.addTrackToPlaylist(id, trackDTO))
                 .build();
     }
+
+    @DELETE
+    @Path("/{id}/tracks/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteTrack(@QueryParam("token") String token, @PathParam("id") int trackId, @PathParam("id") int playlistId){
+        UserDTO user = userService.getUserByToken(token);
+        return Response
+                .status(200)
+                .entity(playlistService.removeTrackFromPlaylist(trackId, playlistId))
+                .build();
+    }
 }
