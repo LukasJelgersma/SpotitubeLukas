@@ -1,12 +1,11 @@
-package com.example.spotitubelukas.services;
+package com.example.spotitubelukas.serviceLayer;
 
 import com.example.spotitubelukas.datasource.PlaylistDao;
-import com.example.spotitubelukas.datasource.TrackDao;
-import com.example.spotitubelukas.dto.PlaylistDTO;
-import com.example.spotitubelukas.dto.TrackDTO;
-import com.example.spotitubelukas.dto.UserDTO;
-import com.example.spotitubelukas.dto.response.PlaylistResponseDTO;
-import com.example.spotitubelukas.dto.response.TrackResponseDTO;
+import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
+import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
+import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
+import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;
+import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;

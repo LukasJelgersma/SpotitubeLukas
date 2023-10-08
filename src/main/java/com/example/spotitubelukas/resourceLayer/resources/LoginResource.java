@@ -1,8 +1,7 @@
-package com.example.spotitubelukas.resources;
+package com.example.spotitubelukas.resourceLayer.resources;
 
-import com.example.spotitubelukas.dto.UserDTO;
-import com.example.spotitubelukas.dto.request.UserRequestDTO;
-import com.example.spotitubelukas.services.UserService;
+import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
+import com.example.spotitubelukas.serviceLayer.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

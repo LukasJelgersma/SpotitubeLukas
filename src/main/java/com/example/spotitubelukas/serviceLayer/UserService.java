@@ -1,11 +1,10 @@
-package com.example.spotitubelukas.services;
+package com.example.spotitubelukas.serviceLayer;
 
 import com.example.spotitubelukas.datasource.UserDao;
-import com.example.spotitubelukas.dto.UserDTO;
-import com.example.spotitubelukas.dto.request.UserRequestDTO;
-import com.example.spotitubelukas.dto.response.UserResponseDTO;
+import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
+import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
+import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
 import com.example.spotitubelukas.exceptions.UserNotAvailableException;
-import com.example.spotitubelukas.exceptions.UsernameIsAlreadyInUseException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 

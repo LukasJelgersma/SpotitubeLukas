@@ -1,9 +1,8 @@
 package com.example.spotitubelukas.datasource;
 
 import com.example.spotitubelukas.datasource.util.DatabaseProperties;
-import com.example.spotitubelukas.dto.PlaylistDTO;
-import com.example.spotitubelukas.dto.TrackDTO;
-import com.example.spotitubelukas.dto.response.TrackResponseDTO;
+import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
+import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 

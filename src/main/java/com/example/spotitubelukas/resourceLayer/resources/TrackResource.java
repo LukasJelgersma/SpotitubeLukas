@@ -1,10 +1,10 @@
-package com.example.spotitubelukas.resources;
+package com.example.spotitubelukas.resourceLayer.resources;
 
-import com.example.spotitubelukas.dto.PlaylistDTO;
-import com.example.spotitubelukas.dto.UserDTO;
-import com.example.spotitubelukas.services.PlaylistService;
-import com.example.spotitubelukas.services.TrackService;
-import com.example.spotitubelukas.services.UserService;
+import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
+import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
+import com.example.spotitubelukas.serviceLayer.PlaylistService;
+import com.example.spotitubelukas.serviceLayer.TrackService;
+import com.example.spotitubelukas.serviceLayer.UserService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

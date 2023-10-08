@@ -1,7 +1,7 @@
 package com.example.spotitubelukas.datasource;
 
 import com.example.spotitubelukas.datasource.util.DatabaseProperties;
-import com.example.spotitubelukas.dto.UserDTO;
+import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 
 import java.sql.*;
 import java.util.logging.Logger;

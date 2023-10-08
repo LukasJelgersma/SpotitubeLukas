@@ -1,4 +1,4 @@
-package com.example.spotitubelukas;
+package com.example.spotitubelukas.resourceLayer.resources;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
