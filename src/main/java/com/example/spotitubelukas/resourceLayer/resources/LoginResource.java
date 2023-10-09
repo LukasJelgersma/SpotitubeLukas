@@ -13,20 +13,17 @@ import jakarta.ws.rs.core.Response;
 @ApplicationScoped
 public class LoginResource {
 
-    private  UserService userService;
-
     @Inject
-    public void setUserService(UserService userService){
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(UserRequestDTO userRequestDTO) {
-        //userService.addUser(user);
 
-        return Response.ok().entity(userService.searchUser(userRequestDTO)).build();
+        return Response.ok()
+                .entity(userService.searchUser(userRequestDTO))
+                .build();
     }
 
 }
