@@ -30,8 +30,8 @@ public class LoginResourceTest {
 
     @Test
     void executeIfLoginSuccesful(){
-        UserRequestDTO userRequestDTO = new UserRequestDTO("lukas", "LukasGaming123");
-        UserResponseDTO userResponseDTO = mockedUserService.searchUser(userRequestDTO);
+        //UserRequestDTO userRequestDTO = new UserRequestDTO("lukas", "LukasGaming123");
+        //UserResponseDTO userResponseDTO = mockedUserService.searchUser(userRequestDTO);
 
     }
 

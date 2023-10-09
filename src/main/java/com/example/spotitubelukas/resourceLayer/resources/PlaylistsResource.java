@@ -71,8 +71,7 @@ public class PlaylistsResource {
     @GET
     @Path("/{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTracks(@QueryParam("token") String token, @PathParam("id") int id) {
-        UserDTO user = userService.getUserByToken(token);
+    public Response getTracks(@PathParam("id") int id) {
         PlaylistDTO playlistDTO = playlistService.getPlaylistById(id);
 
         return Response

@@ -25,5 +25,4 @@ public class LoginResource {
                 .entity(userService.searchUser(userRequestDTO))
                 .build();
     }
-
 }
