@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.data;
+package com.example.spotitubelukas.config;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;

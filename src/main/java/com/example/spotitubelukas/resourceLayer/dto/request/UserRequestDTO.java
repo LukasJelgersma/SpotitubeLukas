@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.dto.request;
+package com.example.spotitubelukas.resourceLayer.dto.request;
 
 public class UserRequestDTO {
     private String user;

@@ -1,6 +1,6 @@
-package com.example.spotitubelukas.dto.response;
+package com.example.spotitubelukas.resourceLayer.dto.response;
 
-import com.example.spotitubelukas.dto.TrackDTO;
+import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 
 import java.util.ArrayList;
 

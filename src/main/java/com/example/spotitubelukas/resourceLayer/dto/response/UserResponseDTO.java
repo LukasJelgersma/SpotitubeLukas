@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.dto.response;
+package com.example.spotitubelukas.resourceLayer.dto.response;
 
 public class UserResponseDTO {
     private String user, token;

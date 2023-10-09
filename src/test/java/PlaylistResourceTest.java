@@ -1,10 +1,8 @@
 import com.example.spotitubelukas.datasource.PlaylistDao;
-import com.example.spotitubelukas.dto.UserDTO;
-import com.example.spotitubelukas.resources.PlaylistsResource;
-import com.example.spotitubelukas.services.PlaylistService;
-import com.example.spotitubelukas.services.UserService;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
+import com.example.spotitubelukas.resourceLayer.resources.PlaylistsResource;
+import com.example.spotitubelukas.serviceLayer.PlaylistService;
+import com.example.spotitubelukas.serviceLayer.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -50,7 +48,7 @@ public class PlaylistResourceTest {
 
 
         // Assert
-        verify(mockedPlaylistService).getPlaylists(userDTO);
+        verify(mockedPlaylistService.getPlaylists(userDTO));
     }
 
     @Test

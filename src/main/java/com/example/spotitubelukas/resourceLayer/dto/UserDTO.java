@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.dto;
+package com.example.spotitubelukas.resourceLayer.dto;
 
 public class UserDTO {
 
