@@ -8,6 +8,7 @@ import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import com.example.spotitubelukas.exceptions.UsernameIsAlreadyInUseException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class UserService {
     public UserResponseDTO searchUser(UserRequestDTO userRequestDTO) {
         UserDTO user = userDao.getUserCredentials(userRequestDTO.getUser());
 
-        if(user.getPassword().equals(userRequestDTO.getPassword())){
+        if(user.getPassword().equals(DigestUtils.sha256Hex(userRequestDTO.getPassword()))){
             String token = UUID.randomUUID().toString();
             user.setUsertoken(token);
             userDao.setUserToken(user);

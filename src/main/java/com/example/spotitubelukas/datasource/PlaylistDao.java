@@ -23,6 +23,7 @@ public class PlaylistDao {
 
     public PlaylistResponseDTO getPlaylistResponse(String username){
         ArrayList<PlaylistDTO> playlists = new ArrayList<>();
+        int totalDuration = 0;
 
         Connection connection;
         try {
@@ -33,6 +34,10 @@ public class PlaylistDao {
             while (resultSet.next()) {
                 ArrayList<TrackDTO> tracks;
                 tracks = getAllTracks(resultSet.getInt("id"), connection);
+
+                totalDuration = tracks.stream()
+                        .mapToInt(TrackDTO::getDuration)
+                        .sum();
 
                 PlaylistDTO playlistDTO = new PlaylistDTO(resultSet.getInt("id"),
                         resultSet.getString("name"),
@@ -47,7 +52,7 @@ public class PlaylistDao {
             logger.severe("Error communicating with database:" + e);
         }
 
-        return new PlaylistResponseDTO(playlists, 1412);
+        return new PlaylistResponseDTO(playlists, totalDuration);
     }
 
     public ArrayList<TrackDTO> getAllTracks(int playlistId, Connection connection){
@@ -72,7 +77,6 @@ public class PlaylistDao {
             //connection.close();
         } catch (SQLException e) {
             logger.severe("Error communicating with database: " + e);
-            System.out.println("SOMETHIN WENT WRONG " + e);
         }
         return tracks;
     }
