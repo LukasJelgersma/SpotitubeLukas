@@ -14,13 +14,10 @@ import jakarta.ws.rs.core.Response;
 @Path("/playlists")
 public class PlaylistsResource {
 
-    @Inject
     private PlaylistService playlistService;
 
-    @Inject
     private UserService userService;
 
-    @Inject
     private TrackService trackService;
 
     @GET
@@ -102,5 +99,20 @@ public class PlaylistsResource {
                 .status(200)
                 .entity(playlistService.removeTrackFromPlaylist(trackId, playlistId, user))
                 .build();
+    }
+
+    @Inject
+    public void setUserService(UserService userService){
+        this.userService = userService;
+    }
+
+    @Inject
+    public void setPlaylistService(PlaylistService playlistService){
+        this.playlistService = playlistService;
+    }
+
+    @Inject
+    public void setTrackService(TrackService trackService){
+        this.trackService = trackService;
     }
 }

@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.Response;
 @ApplicationScoped
 public class LoginResource {
 
-    @Inject
     private UserService userService;
 
     @POST
@@ -21,8 +20,14 @@ public class LoginResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(UserRequestDTO userRequestDTO) {
 
-        return Response.ok()
+        return Response
+                .status(200)
                 .entity(userService.searchUser(userRequestDTO))
                 .build();
+    }
+
+    @Inject
+    public void setUserService(UserService userService){
+        this.userService = userService;
     }
 }
