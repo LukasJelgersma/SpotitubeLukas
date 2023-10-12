@@ -25,7 +25,7 @@ public class TrackResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracks(@QueryParam("token") String token, @QueryParam("forPlaylist") int id) {
         UserDTO user = userService.getUserByToken(token);
-        PlaylistDTO playlistDTO = playlistService.getPlaylistById(id);
+        PlaylistDTO playlistDTO = playlistService.getPlaylistById(id, user);
 
         return Response
                 .status(200)

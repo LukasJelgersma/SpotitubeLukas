@@ -7,6 +7,7 @@ import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import com.example.spotitubelukas.exceptions.UserNotAvailableException;
+import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
@@ -18,8 +19,6 @@ import java.util.Optional;
 @Default
 @ApplicationScoped
 public class PlaylistService {
-    private List<PlaylistDTO> playlists = new ArrayList<>();
-
     @Inject
     private PlaylistDao playlistDao;
 
@@ -35,7 +34,9 @@ public class PlaylistService {
 
         String username = user.getUser();
         PlaylistResponseDTO playlistResponseDTO = playlistDao.getPlaylistResponse(username);
-        playlists.addAll(playlistResponseDTO.getPlaylists());
+
+        //playlists.addAll(playlistResponseDTO.getPlaylists());
+
         // Convert the JSON object to a string and return it
         return playlistDao.getPlaylistResponse(username);
     }
@@ -64,42 +65,25 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
-    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO){
+    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO, UserDTO userDTO){
 
         playlistDao.addTrackToPlaylist(id, trackDTO);
 
-        PlaylistDTO playlistDTO = getPlaylistById(id);
+        PlaylistDTO playlistDTO = playlistDao.getPlaylistById(id, userDTO.getUser());
 
         playlistDTO.getTracks().add(trackDTO);
 
         return new TrackResponseDTO(playlistDTO.getTracks());
     }
 
-    public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId){
+    public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId, UserDTO userDTO){
 
         playlistDao.removeTrackFromPlaylist(trackId, playlistId);
 
-        PlaylistDTO playlistDTO = getPlaylistById(playlistId);
-
-        List<TrackDTO> tracks = playlistDTO.getTracks();
-        for (TrackDTO track : tracks) {
-            if (track.getId() == trackId) {
-                tracks.remove(track);
-                break; // Exit the loop after removing the track
-            }
-        }
-
-        return new TrackResponseDTO(playlistDTO.getTracks());
+        return new TrackResponseDTO(playlistDao.getAllTracks(playlistId));
     }
 
-    public PlaylistDTO getPlaylistById(int id){
-        Optional<PlaylistDTO> requestedPlaylist = playlists.stream()
-                .filter(playlistDto -> playlistDto.getId() == id)
-                .findFirst();
-        if(requestedPlaylist.isPresent()){
-            return requestedPlaylist.get();
-        } else {
-            throw new UserNotAvailableException();
-        }
+    public PlaylistDTO getPlaylistById(int id, UserDTO userDTO){
+        return (playlistDao.getPlaylistById(id, userDTO.getUser()));
     }
 }

@@ -51,7 +51,7 @@ public class PlaylistsResource {
     public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") int id, PlaylistDTO playlistDTO){
         UserDTO user = userService.getUserByToken(token);
         return Response
-                .status(200)
+                .status(201)
                 .entity(playlistService.editPlaylist(user, id, playlistDTO))
                 .build();
     }
@@ -71,8 +71,9 @@ public class PlaylistsResource {
     @GET
     @Path("/{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTracks(@PathParam("id") int id) {
-        PlaylistDTO playlistDTO = playlistService.getPlaylistById(id);
+    public Response getTracks(@QueryParam("token") String token, @PathParam("id") int id) {
+        UserDTO user = userService.getUserByToken(token);
+        PlaylistDTO playlistDTO = playlistService.getPlaylistById(id, user);
 
         return Response
                 .status(200)
@@ -84,9 +85,10 @@ public class PlaylistsResource {
     @Path("{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrack(@QueryParam("token") String token, @PathParam("id") int id, TrackDTO trackDTO){
+        UserDTO user = userService.getUserByToken(token);
         return Response
-                .status(200)
-                .entity(playlistService.addTrackToPlaylist(id, trackDTO))
+                .status(201)
+                .entity(playlistService.addTrackToPlaylist(id, trackDTO, user))
                 .build();
     }
 
@@ -94,10 +96,11 @@ public class PlaylistsResource {
     @Path("/{playlistId}/tracks/{trackId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteTrack(@PathParam("trackId") int trackId, @PathParam("playlistId") int playlistId){
+    public Response deleteTrack(@QueryParam("token") String token, @PathParam("trackId") int trackId, @PathParam("playlistId") int playlistId){
+        UserDTO user = userService.getUserByToken(token);
         return Response
                 .status(200)
-                .entity(playlistService.removeTrackFromPlaylist(trackId, playlistId))
+                .entity(playlistService.removeTrackFromPlaylist(trackId, playlistId, user))
                 .build();
     }
 }

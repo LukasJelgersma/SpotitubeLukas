@@ -23,6 +23,7 @@ public class PlaylistDao {
     public PlaylistResponseDTO getPlaylistResponse(String username){
         ArrayList<PlaylistDTO> playlists = new ArrayList<>();
         int totalDuration = 0;
+        int totalTrackDuration = 0;
 
         Connection connection;
         try {
@@ -32,9 +33,9 @@ public class PlaylistDao {
             ResultSet resultSet = selectStatement.executeQuery();
             while (resultSet.next()) {
                 ArrayList<TrackDTO> tracks;
-                tracks = getAllTracks(resultSet.getInt("id"), connection);
+                tracks = getAllTracks(resultSet.getInt("id"));
 
-                totalDuration = tracks.stream()
+                totalTrackDuration = tracks.stream()
                         .mapToInt(TrackDTO::getDuration)
                         .sum();
 
@@ -43,6 +44,7 @@ public class PlaylistDao {
                         Objects.equals(username, resultSet.getString("owner")));
                 playlistDTO.setTracks(tracks);
                 playlists.add(playlistDTO);
+                totalDuration += totalTrackDuration;
             }
 
             selectStatement.close();
@@ -54,9 +56,11 @@ public class PlaylistDao {
         return new PlaylistResponseDTO(playlists, totalDuration);
     }
 
-    public ArrayList<TrackDTO> getAllTracks(int playlistId, Connection connection){
+    public ArrayList<TrackDTO> getAllTracks(int playlistId){
+        Connection connection;
         ArrayList<TrackDTO> tracks = new ArrayList<>();
         try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_SELECT_TRACKS_ALL);
 
             selectStatementTrack.setInt(1, playlistId);
@@ -78,6 +82,34 @@ public class PlaylistDao {
             logger.severe("Error communicating with database: " + e);
         }
         return tracks;
+    }
+
+    public PlaylistDTO getPlaylistById(int id, String username){
+        Connection connection;
+        PlaylistDTO playlistDTO = null;
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement selectPlaylistStatement = connection.prepareStatement(SQL_SELECT_PLAYLIST_BY_ID);
+
+            selectPlaylistStatement.setInt(1, id);
+
+            ResultSet resultSet = selectPlaylistStatement.executeQuery();
+            while (resultSet.next()) {
+                ArrayList<TrackDTO> tracks;
+                tracks = getAllTracks(resultSet.getInt("id"));
+
+                playlistDTO = new PlaylistDTO(resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        Objects.equals(username, resultSet.getString("owner")));
+                playlistDTO.setTracks(tracks);
+            }
+
+            selectPlaylistStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database:" + e);
+        }
+        return playlistDTO;
     }
 
     public void addPlaylist(String username, PlaylistDTO playlistDTO){
@@ -174,6 +206,7 @@ public class PlaylistDao {
     }
 
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM playlists";
+    private static final String SQL_SELECT_PLAYLIST_BY_ID = "SELECT * FROM playlists where id = ?";
     private static final String SQL_SELECT_TRACKS_ALL = "SELECT * FROM tracksinplaylists tp JOIN tracks t ON tp.trackid = t.id WHERE tp.playlistid = ?";
     private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
     private static final String SQL_DELETE_PLAYLIST = "DELETE FROM playlists WHERE (owner = ?) AND (id = ?)";
