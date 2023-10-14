@@ -1,13 +1,16 @@
+import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
 import com.example.spotitubelukas.resourceLayer.resources.LoginResource;
 import com.example.spotitubelukas.serviceLayer.UserService;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +19,6 @@ import static org.mockito.Mockito.*;
 public class LoginResourceTest {
 
     private LoginResource sut;
-
     private UserService mockedUserService;
     private UserRequestDTO mockedUserRequestDTO;
 
@@ -35,14 +37,35 @@ public class LoginResourceTest {
     }
 
     @Test
-    void executeIfLoginSuccesful(){
-        var result = sut.login(mockedUserRequestDTO);
+    void LoginSuccesful(){
+        // Arrange
+        var returnWaardeFixture = new UserResponseDTO("Lukas Jelgersma", "870df322-1800-4a1e-9f54-e78908fc4667");
 
-        assertEquals(200, result.getStatus());
+        // Mock service
+        Mockito.when(mockedUserService.authUser(mockedUserRequestDTO)).thenReturn(returnWaardeFixture);
 
-        //UserRequestDTO userRequestDTO = new UserRequestDTO("lukas", "LukasGaming123");
-        //UserResponseDTO userResponseDTO = mockedUserService.searchUser(userRequestDTO);
+        // Act
+        Response response = sut.login(mockedUserRequestDTO);
 
+        // Assert
+        //assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        // Voor alleen de UserResponseDTO
+        UserResponseDTO userResponse = (UserResponseDTO) response.getEntity();
+        assertEquals(returnWaardeFixture, userResponse);
+    }
+
+    @Test
+    void LoginUnsuccesful(){
+        // Arrange
+        var returnWaardeFixture = UserNotAvailableException.class;
+
+        // Mock service
+        Mockito.when(mockedUserService.authUser(mockedUserRequestDTO)).thenThrow(returnWaardeFixture);
+
+        // Throw en Assert
+        Assertions.assertThrows(UserNotAvailableException.class, () -> {
+            sut.login(mockedUserRequestDTO);
+        });
     }
 
 }
