@@ -65,6 +65,29 @@ public class UserDao {
         return user;
     }
 
+    public UserDTO getUserByToken(String token){
+        Connection connection;
+        UserDTO user = null;
+        try {
+            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement selectStatement = connection.prepareStatement(SQL_SELECT_USER_BY_TOKEN);
+
+            selectStatement.setString(1, token);
+
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                user = new UserDTO(resultSet.getString("user"), resultSet.getString("password"),
+                        resultSet.getString("name"), resultSet.getString("usertoken"));
+            }
+
+            selectStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.severe("Error communicating with database:" + e);
+        }
+        return user;
+    }
+
     public void addUser(UserDTO user) {
         Connection connection;
         try {
@@ -87,5 +110,6 @@ public class UserDao {
     private static final String SQL_INSERT = "INSERT INTO users (user, password) VALUES (?,?)";
     private static final String SQL_UPDATE_TOKEN = "UPDATE users SET usertoken = ? WHERE user = ?";
     private static final String SQL_SELECT_USER_ALL = "SELECT user, password, name, usertoken FROM users WHERE user = ?";
+    private static final String SQL_SELECT_USER_BY_TOKEN = "SELECT user, password, name, usertoken FROM users WHERE usertoken = ?";
 
 }

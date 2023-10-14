@@ -22,7 +22,7 @@ public class LoginResource {
 
         return Response
                 .status(200)
-                .entity(userService.searchUser(userRequestDTO))
+                .entity(userService.authUser(userRequestDTO))
                 .build();
     }
 
