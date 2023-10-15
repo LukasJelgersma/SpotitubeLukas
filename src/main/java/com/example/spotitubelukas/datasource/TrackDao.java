@@ -32,7 +32,7 @@ public class TrackDao {
                 TrackDTO track = new TrackDTO(resultSet.getInt("id"),
                         resultSet.getString("title"), resultSet.getString("performer"),
                         resultSet.getInt("duration"), resultSet.getString("album"),
-                        resultSet.getInt("playcount"), resultSet.getDate("publicationDate"),
+                        resultSet.getInt("playcount"), resultSet.getDate("publicationDate").toLocalDate(),
                         resultSet.getString("description"),
                         resultSet.getBoolean("offlineAvailable"));
                 tracks.add(track);
@@ -61,7 +61,7 @@ public class TrackDao {
                 track = new TrackDTO(resultSet.getInt("id"),
                         resultSet.getString("title"), resultSet.getString("performer"),
                         resultSet.getInt("duration"), resultSet.getString("album"),
-                        resultSet.getInt("playcount"), resultSet.getDate("publicationDate"),
+                        resultSet.getInt("playcount"), resultSet.getDate("publicationDate").toLocalDate(),
                         resultSet.getString("description"),
                         resultSet.getBoolean("offlineAvailable"));
             }

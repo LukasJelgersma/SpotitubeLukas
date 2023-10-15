@@ -1,28 +1,23 @@
 package com.example.spotitubelukas.serviceLayer;
 
 import com.example.spotitubelukas.datasource.PlaylistDao;
+import com.example.spotitubelukas.exceptionmappers.PlaylistNotAvailableExceptionMapper;
+import com.example.spotitubelukas.exceptions.PlaylistNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
-import com.example.spotitubelukas.exceptions.UserNotAvailableException;
-import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @Default
 @ApplicationScoped
 public class PlaylistService {
-    @Inject
+
     private PlaylistDao playlistDao;
 
-    @Inject
     private TrackService trackService;
 
 
@@ -33,12 +28,11 @@ public class PlaylistService {
 
 
         String username = user.getUser();
-        PlaylistResponseDTO playlistResponseDTO = playlistDao.getPlaylistResponse(username);
-
-        //playlists.addAll(playlistResponseDTO.getPlaylists());
-
-        // Convert the JSON object to a string and return it
-        return playlistDao.getPlaylistResponse(username);
+        try{
+            return playlistDao.getPlaylistResponse(username);
+        } catch (Exception e){
+            throw new PlaylistNotAvailableException();
+        }
     }
 
     public PlaylistResponseDTO addPlaylist(UserDTO user, PlaylistDTO playlistDTO) {
@@ -85,5 +79,14 @@ public class PlaylistService {
 
     public PlaylistDTO getPlaylistById(int id, UserDTO userDTO){
         return (playlistDao.getPlaylistById(id, userDTO.getUser()));
+    }
+
+    @Inject
+    public void setPlaylistDao(PlaylistDao playlistDao){
+        this.playlistDao = playlistDao;
+    }
+    @Inject
+    public void setTrackService(TrackService trackService){
+        this.trackService = trackService;
     }
 }

@@ -2,10 +2,14 @@ package com.example.spotitubelukas.datasource;
 
 import com.example.spotitubelukas.datasource.util.DatabaseProperties;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 
 import java.sql.*;
 import java.util.logging.Logger;
 
+@Default
+@ApplicationScoped
 public class UserDao {
 
     private Logger logger = Logger.getLogger(getClass().getName());

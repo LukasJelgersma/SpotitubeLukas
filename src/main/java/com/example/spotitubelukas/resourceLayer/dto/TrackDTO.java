@@ -1,5 +1,6 @@
 package com.example.spotitubelukas.resourceLayer.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TrackDTO {
@@ -9,11 +10,11 @@ public class TrackDTO {
     private int duration;
     private String album;
     private int playcount;
-    private Date publicationDate;
+    private LocalDate publicationDate;
     private String description;
     private boolean offlineAvailable;
 
-    public TrackDTO(int id, String title, String performer, int duration, String album, int playcount, Date publicationDate, String description, boolean offlineAvailable) {
+    public TrackDTO(int id, String title, String performer, int duration, String album, int playcount, LocalDate publicationDate, String description, boolean offlineAvailable) {
         this.id = id;
         this.title = title;
         this.performer = performer;
@@ -77,11 +78,11 @@ public class TrackDTO {
         this.playcount = playcount;
     }
 
-    public Date getPublicationDate() {
+    public LocalDate getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 
