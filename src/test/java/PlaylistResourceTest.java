@@ -81,16 +81,69 @@ public class PlaylistResourceTest {
 
         // Throw en Assert
         Assertions.assertThrows(PlaylistNotAvailableException.class, () -> {
-            sut.getPlaylists("020e7c79-e849-461e-8a92-72b17f969dc1");
+            sut.getPlaylists("870df322-1800-4a1e-9f54-e78908fc4667");
         });
     }
 
-//    @Test
-//    void addPlaylistSuccesful() {
-//        // Arrange
-//        var returnWaardeFixture = new PlaylistDTO(1, "Hardstyle", true, new ArrayList<>());
-//
-//        // Mock service
-//        Mockito.when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenReturn(returnWaardeFixture);
-//    }
+    @Test
+    void addPlaylistSuccesful(){
+        // Arrange
+        ArrayList<PlaylistDTO> mockedPlaylistResponseDTO = new ArrayList<>();
+        mockedPlaylistResponseDTO.add(mockedPlaylistDTO);
+        var returnWaardeFixture = new PlaylistResponseDTO(mockedPlaylistResponseDTO, 1);
+
+        // Mock service
+        Mockito.when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenReturn(returnWaardeFixture);
+
+        // Act
+        Response response = sut.addPlaylist("870df322-1800-4a1e-9f54-e78908fc4667", mockedPlaylistDTO);
+
+        // Assert
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void addPlaylistUnsuccesful(){
+        // Arrange
+        var returnWaardeFixture = PlaylistNotAvailableException.class;
+
+        // Mock service
+        Mockito.when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenThrow(returnWaardeFixture);
+
+        // Throw en Assert
+        Assertions.assertThrows(PlaylistNotAvailableException.class, () -> {
+            sut.addPlaylist("870df322-1800-4a1e-9f54-e78908fc4667", mockedPlaylistDTO);
+        });
+    }
+
+    @Test
+    void deletePlaylistSuccesful(){
+        // Arrange
+        ArrayList<PlaylistDTO> mockedPlaylistResponseDTO = new ArrayList<>();
+        mockedPlaylistResponseDTO.add(mockedPlaylistDTO);
+        var returnWaardeFixture = new PlaylistResponseDTO(mockedPlaylistResponseDTO, 1);
+
+        // Mock service
+        Mockito.when(mockedPlaylistService.deletePlaylist(mockedUserDTO, 1)).thenReturn(returnWaardeFixture);
+
+        // Act
+        Response response = sut.deletePlaylist("870df322-1800-4a1e-9f54-e78908fc4667", 1);
+
+        // Assert
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void deletePlaylistUnsuccesful(){
+        // Arrange
+        var returnWaardeFixture = PlaylistNotAvailableException.class;
+
+        // Mock service
+        Mockito.when(mockedPlaylistService.deletePlaylist(mockedUserDTO, 1)).thenThrow(returnWaardeFixture);
+
+        // Throw en Assert
+        Assertions.assertThrows(PlaylistNotAvailableException.class, () -> {
+            sut.deletePlaylist("870df322-1800-4a1e-9f54-e78908fc4667", 1);
+        });
+    }
 }

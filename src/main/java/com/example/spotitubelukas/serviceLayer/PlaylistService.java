@@ -1,7 +1,6 @@
 package com.example.spotitubelukas.serviceLayer;
 
 import com.example.spotitubelukas.datasource.PlaylistDao;
-import com.example.spotitubelukas.exceptionmappers.PlaylistNotAvailableExceptionMapper;
 import com.example.spotitubelukas.exceptions.PlaylistNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
@@ -30,8 +29,8 @@ public class PlaylistService {
         String username = user.getUser();
         try{
             return playlistDao.getPlaylistResponse(username);
-        } catch (Exception e){
-            throw new PlaylistNotAvailableException();
+        } catch (PlaylistNotAvailableException e){
+            throw new PlaylistNotAvailableException(e.getMessage());
         }
     }
 
