@@ -27,11 +27,8 @@ public class PlaylistService {
 
 
         String username = user.getUser();
-        try{
-            return playlistDao.getPlaylistResponse(username);
-        } catch (PlaylistNotAvailableException e){
-            throw new PlaylistNotAvailableException(e.getMessage());
-        }
+
+        return playlistDao.getPlaylistResponse(username);
     }
 
     public PlaylistResponseDTO addPlaylist(UserDTO user, PlaylistDTO playlistDTO) {
@@ -42,7 +39,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
-    public PlaylistResponseDTO deletePlaylist(UserDTO user, int id){
+    public PlaylistResponseDTO deletePlaylist(UserDTO user, int id) {
         String username = user.getUser();
 
         playlistDao.deletePlaylist(username, id);
@@ -50,7 +47,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
-    public PlaylistResponseDTO editPlaylist(UserDTO user, int id, PlaylistDTO playlistDTO){
+    public PlaylistResponseDTO editPlaylist(UserDTO user, int id, PlaylistDTO playlistDTO) {
         String username = user.getUser();
 
         playlistDao.editPlaylist(username, id, playlistDTO);
@@ -58,7 +55,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
-    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO, UserDTO userDTO){
+    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO, UserDTO userDTO) {
 
         playlistDao.addTrackToPlaylist(id, trackDTO);
 
@@ -69,23 +66,24 @@ public class PlaylistService {
         return new TrackResponseDTO(playlistDTO.getTracks());
     }
 
-    public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId, UserDTO userDTO){
+    public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId) {
 
         playlistDao.removeTrackFromPlaylist(trackId, playlistId);
 
         return new TrackResponseDTO(playlistDao.getAllTracks(playlistId));
     }
 
-    public PlaylistDTO getPlaylistById(int id, UserDTO userDTO){
+    public PlaylistDTO getPlaylistById(int id, UserDTO userDTO) {
         return (playlistDao.getPlaylistById(id, userDTO.getUser()));
     }
 
     @Inject
-    public void setPlaylistDao(PlaylistDao playlistDao){
+    public void setPlaylistDao(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
+
     @Inject
-    public void setTrackService(TrackService trackService){
+    public void setTrackService(TrackService trackService) {
         this.trackService = trackService;
     }
 }

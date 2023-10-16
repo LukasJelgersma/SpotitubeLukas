@@ -1,4 +1,3 @@
-import com.example.spotitubelukas.datasource.PlaylistDao;
 import com.example.spotitubelukas.exceptions.PlaylistNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
@@ -13,137 +12,174 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class PlaylistResourceTest {
     private PlaylistsResource sut;
     private PlaylistService mockedPlaylistService;
     private UserService mockedUserService;
+    private TrackService mockedTrackService;
     private PlaylistDTO mockedPlaylistDTO;
     private TrackDTO mockedTrackDTO;
     private TrackResponseDTO mockedTrackResponseDTO;
+    private PlaylistResponseDTO mockedPlaylistResponseDTO;
     private UserDTO mockedUserDTO;
+    private String testtoken = "testtoken1";
+    private int testPlaylistId = 1;
 
     @BeforeEach
-    void setup(){
+    public void setup() {
         this.sut = new PlaylistsResource();
 
         this.mockedPlaylistService = mock(PlaylistService.class);
         this.sut.setPlaylistService(mockedPlaylistService);
+
         this.mockedUserService = mock(UserService.class);
         this.sut.setUserService(mockedUserService);
 
-        this.mockedTrackDTO = new TrackDTO(1, "test", "test",
-                145, "test", 12,
-                LocalDate.parse("2018-05-05"), "test", true);
-        ArrayList<TrackDTO> mockedTracks = new ArrayList<>();
-        mockedTracks.add(mockedTrackDTO);
-        this.mockedTrackResponseDTO = new TrackResponseDTO(mockedTracks);
-        this.mockedPlaylistDTO = new PlaylistDTO(1, "Hardstyle", true);
-        mockedPlaylistDTO.setTracks(mockedTracks);
-        this.mockedUserDTO = new UserDTO("lukas", "LukasGaming123", "Lukas Jelgersma", "870df322-1800-4a1e-9f54-e78908fc4667");
+        this.mockedTrackService = mock(TrackService.class);
+        this.sut.setTrackService(mockedTrackService);
 
-        // Gebruik Mockito om een instantie te maken
+        this.mockedTrackDTO = mock(TrackDTO.class);
+        this.mockedPlaylistDTO = mock(PlaylistDTO.class);
+
+        this.mockedPlaylistResponseDTO = mock(PlaylistResponseDTO.class);
+        this.mockedTrackResponseDTO = mock(TrackResponseDTO.class);
+        this.mockedUserDTO = mock(UserDTO.class);
+
+        mockedTrackDTO.setId(1);
+        mockedPlaylistDTO.setId(1);
+        mockedUserDTO.setUsertoken(testtoken);
+
+        mockedTrackResponseDTO.getTracks().add(mockedTrackDTO);
+
+        ArrayList<PlaylistDTO> playlistDTOArrayList = new ArrayList<>();
+        playlistDTOArrayList.add(mockedPlaylistDTO);
+
+        mockedPlaylistResponseDTO.setPlaylists(playlistDTOArrayList);
+
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void getPlaylistsSuccesful(){
+    void getPlaylistsSuccesful() {
         // Arrange
-        ArrayList<PlaylistDTO> mockedPlaylistResponseDTO = new ArrayList<>();
-        mockedPlaylistResponseDTO.add(mockedPlaylistDTO);
-        var returnWaardeFixture = new PlaylistResponseDTO(mockedPlaylistResponseDTO, 1);
-
         // Mock service
-        Mockito.when(mockedPlaylistService.getPlaylists(mockedUserDTO)).thenReturn(returnWaardeFixture);
+        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedPlaylistService.getPlaylists(mockedUserDTO)).thenReturn(mockedPlaylistResponseDTO);
 
         // Act
-        Response response = sut.getPlaylists("870df322-1800-4a1e-9f54-e78908fc4667");
+        Response result = sut.getPlaylists(testtoken);
 
         // Assert
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(mockedPlaylistResponseDTO, result.getEntity());
+
     }
 
     @Test
-    void getPlaylistsUnsuccesful(){
+    void addPlaylistSuccesful() {
         // Arrange
-        var returnWaardeFixture = PlaylistNotAvailableException.class;
 
         // Mock service
-        Mockito.when(mockedPlaylistService.getPlaylists(mockedUserDTO)).thenThrow(returnWaardeFixture);
-
-        // Throw en Assert
-        Assertions.assertThrows(PlaylistNotAvailableException.class, () -> {
-            sut.getPlaylists("870df322-1800-4a1e-9f54-e78908fc4667");
-        });
-    }
-
-    @Test
-    void addPlaylistSuccesful(){
-        // Arrange
-        ArrayList<PlaylistDTO> mockedPlaylistResponseDTO = new ArrayList<>();
-        mockedPlaylistResponseDTO.add(mockedPlaylistDTO);
-        var returnWaardeFixture = new PlaylistResponseDTO(mockedPlaylistResponseDTO, 1);
-
-        // Mock service
-        Mockito.when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenReturn(returnWaardeFixture);
+        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenReturn(mockedPlaylistResponseDTO);
 
         // Act
-        Response response = sut.addPlaylist("870df322-1800-4a1e-9f54-e78908fc4667", mockedPlaylistDTO);
+        Response result = sut.addPlaylist(testtoken, mockedPlaylistDTO);
 
         // Assert
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.CREATED.getStatusCode(), result.getStatus());
+        assertEquals(mockedPlaylistResponseDTO, result.getEntity());
     }
 
     @Test
-    void addPlaylistUnsuccesful(){
+    void deletePlaylistSuccesful() {
         // Arrange
-        var returnWaardeFixture = PlaylistNotAvailableException.class;
 
         // Mock service
-        Mockito.when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenThrow(returnWaardeFixture);
+        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedPlaylistService.deletePlaylist(mockedUserDTO, testPlaylistId)).thenReturn(mockedPlaylistResponseDTO);
 
-        // Throw en Assert
-        Assertions.assertThrows(PlaylistNotAvailableException.class, () -> {
-            sut.addPlaylist("870df322-1800-4a1e-9f54-e78908fc4667", mockedPlaylistDTO);
-        });
-    }
-
-    @Test
-    void deletePlaylistSuccesful(){
-        // Arrange
-        ArrayList<PlaylistDTO> mockedPlaylistResponseDTO = new ArrayList<>();
-        mockedPlaylistResponseDTO.add(mockedPlaylistDTO);
-        var returnWaardeFixture = new PlaylistResponseDTO(mockedPlaylistResponseDTO, 1);
-
-        // Mock service
-        Mockito.when(mockedPlaylistService.deletePlaylist(mockedUserDTO, 1)).thenReturn(returnWaardeFixture);
 
         // Act
-        Response response = sut.deletePlaylist("870df322-1800-4a1e-9f54-e78908fc4667", 1);
+        Response result = sut.deletePlaylist(testtoken, testPlaylistId);
 
         // Assert
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(mockedPlaylistResponseDTO, result.getEntity());
     }
 
     @Test
-    void deletePlaylistUnsuccesful(){
+    void editPlaylistSuccesful() {
         // Arrange
-        var returnWaardeFixture = PlaylistNotAvailableException.class;
 
         // Mock service
-        Mockito.when(mockedPlaylistService.deletePlaylist(mockedUserDTO, 1)).thenThrow(returnWaardeFixture);
+        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedPlaylistService.editPlaylist(mockedUserDTO, testPlaylistId, mockedPlaylistDTO)).thenReturn(mockedPlaylistResponseDTO);
 
-        // Throw en Assert
-        Assertions.assertThrows(PlaylistNotAvailableException.class, () -> {
-            sut.deletePlaylist("870df322-1800-4a1e-9f54-e78908fc4667", 1);
-        });
+        // Act
+        Response result = sut.editPlaylist(testtoken, testPlaylistId, mockedPlaylistDTO);
+
+        // Assert
+        assertEquals(Response.Status.CREATED.getStatusCode(), result.getStatus());
+        assertEquals(mockedPlaylistResponseDTO, result.getEntity());
     }
+
+    @Test
+    void addTrackToPlaylistSuccesful() {
+        // Arrange
+
+        // Mock service
+        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
+        when(mockedPlaylistService.addTrackToPlaylist(testPlaylistId, mockedTrackDTO, mockedUserDTO)).thenReturn(mockedTrackResponseDTO);
+
+        // Act
+        Response result = sut.addTrack(testtoken, testPlaylistId, mockedTrackDTO);
+
+        // Assert
+        assertEquals(Response.Status.CREATED.getStatusCode(), result.getStatus());
+        assertEquals(mockedTrackResponseDTO, result.getEntity());
+    }
+
+    @Test
+    void removeTrackFromPlaylistSuccesful() {
+        // Arrange
+
+        // Mock service
+        when(mockedPlaylistService.removeTrackFromPlaylist(mockedTrackDTO.getId(), testPlaylistId)).thenReturn(mockedTrackResponseDTO);
+
+        // Act
+        Response result = sut.deleteTrack(mockedTrackDTO.getId(), testPlaylistId);
+
+        // Assert
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(mockedTrackResponseDTO, result.getEntity());
+    }
+
+    @Test
+    void getTracksFromPlaylistSuccesful(){
+        // Arrange
+
+        // Mock service
+        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
+        when(mockedTrackService.getPlaylistTracks(mockedPlaylistDTO)).thenReturn(mockedTrackResponseDTO);
+
+        // Act
+        Response result = sut.getTracks(testtoken, testPlaylistId);
+
+        // Assert
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+        assertEquals(mockedTrackResponseDTO, result.getEntity());
+    }
+
+
+
 }
