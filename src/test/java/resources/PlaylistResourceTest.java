@@ -1,3 +1,5 @@
+package resources;
+
 import com.example.spotitubelukas.exceptions.PlaylistNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;

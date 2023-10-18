@@ -1,3 +1,5 @@
+package resources;
+
 import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
