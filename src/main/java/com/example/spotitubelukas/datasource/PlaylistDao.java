@@ -23,8 +23,6 @@ public class PlaylistDao {
     public PlaylistResponseDTO getPlaylistResponse(String username){
         ArrayList<PlaylistDTO> playlists = new ArrayList<>();
         int totalDuration = 0;
-        int totalTrackDuration = 0;
-
         Connection connection;
         try {
             connection = DriverManager.getConnection(databaseProperties.connectionString());
@@ -35,7 +33,7 @@ public class PlaylistDao {
                 ArrayList<TrackDTO> tracks;
                 tracks = getAllTracks(resultSet.getInt("id"));
 
-                totalTrackDuration = tracks.stream()
+                int totalTrackDuration = tracks.stream()
                         .mapToInt(TrackDTO::getDuration)
                         .sum();
 
@@ -213,7 +211,4 @@ public class PlaylistDao {
     private static final String SQL_EDIT_PLAYLIST = "UPDATE playlists SET name = ? WHERE (owner = ?) AND (id = ?)";
     private static final String SQL_ADD_TRACK_PLAYLIST = "INSERT INTO tracksinplaylists (trackid, playlistid) VALUES (?, ?)";
     private static final String SQL_REMOVE_TRACK_PLAYLIST = "DELETE FROM tracksinplaylists WHERE (trackid = ?) AND (playlistid = ?)";
-
-
-
 }
