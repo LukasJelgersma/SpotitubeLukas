@@ -55,15 +55,11 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
-    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO, UserDTO userDTO) {
+    public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO) {
 
         playlistDao.addTrackToPlaylist(id, trackDTO);
 
-        PlaylistDTO playlistDTO = playlistDao.getPlaylistById(id, userDTO.getUser());
-
-        playlistDTO.getTracks().add(trackDTO);
-
-        return new TrackResponseDTO(playlistDTO.getTracks());
+        return new TrackResponseDTO(playlistDao.getAllTracks(id));
     }
 
     public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId) {

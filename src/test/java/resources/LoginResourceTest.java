@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class LoginResourceTest {
@@ -44,7 +45,7 @@ public class LoginResourceTest {
         var returnWaardeFixture = new UserResponseDTO("Lukas Jelgersma", "870df322-1800-4a1e-9f54-e78908fc4667");
 
         // Mock service
-        Mockito.when(mockedUserService.authUser(mockedUserRequestDTO)).thenReturn(returnWaardeFixture);
+        when(mockedUserService.authUser(mockedUserRequestDTO)).thenReturn(returnWaardeFixture);
 
         // Act
         Response response = sut.login(mockedUserRequestDTO);
@@ -62,10 +63,10 @@ public class LoginResourceTest {
         var returnWaardeFixture = UserNotAvailableException.class;
 
         // Mock service
-        Mockito.when(mockedUserService.authUser(mockedUserRequestDTO)).thenThrow(returnWaardeFixture);
+        when(mockedUserService.authUser(mockedUserRequestDTO)).thenThrow(returnWaardeFixture);
 
         // Throw en Assert
-        Assertions.assertThrows(UserNotAvailableException.class, () -> {
+        assertThrows(UserNotAvailableException.class, () -> {
             sut.login(mockedUserRequestDTO);
         });
     }

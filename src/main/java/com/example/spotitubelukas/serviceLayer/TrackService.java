@@ -13,11 +13,7 @@ import java.sql.Connection;
 @Default
 @ApplicationScoped
 public class TrackService {
-
-    @Inject
     private TrackDao trackDao;
-
-    @Inject
     private PlaylistDao playlistDao;
 
     public TrackService(){
@@ -31,6 +27,16 @@ public class TrackService {
     public TrackResponseDTO getAllAvailableTracks(PlaylistDTO playlistDTO){
 
         return trackDao.getAvailableTracks(playlistDTO.getId());
+    }
+
+    @Inject
+    public void setTrackDao(TrackDao trackDao) {
+        this.trackDao = trackDao;
+    }
+
+    @Inject
+    public void setPlaylistDao(PlaylistDao playlistDao) {
+        this.playlistDao = playlistDao;
     }
 
 }

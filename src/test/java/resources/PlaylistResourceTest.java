@@ -140,7 +140,7 @@ public class PlaylistResourceTest {
         // Mock service
         when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
         when(mockedPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
-        when(mockedPlaylistService.addTrackToPlaylist(testPlaylistId, mockedTrackDTO, mockedUserDTO)).thenReturn(mockedTrackResponseDTO);
+        when(mockedPlaylistService.addTrackToPlaylist(testPlaylistId, mockedTrackDTO)).thenReturn(mockedTrackResponseDTO);
 
         // Act
         Response result = sut.addTrack(testtoken, testPlaylistId, mockedTrackDTO);

@@ -85,7 +85,7 @@ public class PlaylistsResource {
         UserDTO user = userService.getUserByToken(token);
         return Response
                 .status(201)
-                .entity(playlistService.addTrackToPlaylist(id, trackDTO, user))
+                .entity(playlistService.addTrackToPlaylist(id, trackDTO))
                 .build();
     }
 
