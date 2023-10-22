@@ -1,15 +1,21 @@
 package com.example.spotitubelukas.datasource.util;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
+import jakarta.persistence.Access;
+
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Default
+@ApplicationScoped
 public class DatabaseProperties {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
-    Properties properties = new Properties();
+    private Properties properties;
 
     public DatabaseProperties() {
         properties = new Properties();
