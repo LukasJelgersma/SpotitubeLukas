@@ -1,10 +1,12 @@
 package com.example.spotitubelukas.datasource;
 
+import com.example.spotitubelukas.datasource.util.ConnectionManager;
 import com.example.spotitubelukas.datasource.util.DatabaseProperties;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,14 +17,12 @@ import java.util.logging.Logger;
 public class TrackDao {
     private Logger logger = Logger.getLogger(getClass().getName());
 
-    DatabaseProperties databaseProperties = new DatabaseProperties();
+    private ConnectionManager connectionManager;
 
     public TrackResponseDTO getAvailableTracks(int playlistId){
-        Connection connection;
-
         ArrayList<TrackDTO> tracks = new ArrayList<>();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            Connection connection = connectionManager.ConnectionStart();
             PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_GET_AVAILABLE_TRACK);
 
             selectStatementTrack.setInt(1, playlistId);
@@ -47,11 +47,10 @@ public class TrackDao {
     }
 
     public TrackDTO getTrack(int trackId){
-        Connection connection;
         TrackDTO track = null;
 
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
+            Connection connection = connectionManager.ConnectionStart();
             PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_GET_TRACK);
 
             selectStatementTrack.setInt(1, trackId);
@@ -72,6 +71,11 @@ public class TrackDao {
             logger.severe("Error communicating with database: " + e);
         }
         return track;
+    }
+
+    @Inject
+    public void setConnectionManager(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
     }
 
     private static final String SQL_GET_AVAILABLE_TRACK = "SELECT t.* FROM spotitube.tracks t LEFT JOIN" +

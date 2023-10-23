@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PlaylistDao {
     private Logger logger = Logger.getLogger(getClass().getName());
-    DatabaseProperties databaseProperties = new DatabaseProperties();
     private ConnectionManager connectionManager;
 
     public PlaylistDao() {
