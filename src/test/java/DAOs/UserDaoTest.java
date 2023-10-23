@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class UserDaoTest {
@@ -79,5 +80,54 @@ public class UserDaoTest {
         verify(mockedPreparedStatement, times(1)).close();
         verify(mockedConnection, times(1)).close();
         assertEquals(mockedUserDTO.getUser(), result.getUser());
+    }
+
+    @Test
+    void succesfullyGetUserByToken() throws SQLException{
+        when(mockedConnectionManager.ConnectionStart()).thenReturn(mockedConnection);
+        when(mockedConnection.prepareStatement(anyString())).thenReturn(mockedPreparedStatement);
+        when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
+        when(mockedResultSet.next()).thenReturn(true, false);
+        when(mockedResultSet.getString("user")).thenReturn(mockedUserDTO.getUser());
+        when(mockedResultSet.getString("password")).thenReturn(mockedUserDTO.getPassword());
+        when(mockedResultSet.getString("name")).thenReturn(mockedUserDTO.getName());
+        when(mockedResultSet.getString("usertoken")).thenReturn(mockedUserDTO.getUsertoken());
+
+        UserDTO result = sut.getUserByToken("testtoken");
+
+        // Verify that the correct methods are called
+        verify(mockedConnectionManager, times(1)).ConnectionStart();
+        verify(mockedConnection, times(1)).prepareStatement(anyString());
+        verify(mockedPreparedStatement, times(1)).setString(1, mockedUserDTO.getUsertoken());
+        verify(mockedPreparedStatement, times(1)).executeQuery();
+        verify(mockedPreparedStatement, times(1)).close();
+        verify(mockedConnection, times(1)).close();
+        assertEquals(mockedUserDTO.getUser(), result.getUser());
+    }
+
+    @Test
+    void unsuccesfullyGetUserByToken() throws SQLException{
+        when(mockedConnectionManager.ConnectionStart()).thenReturn(mockedConnection);
+        when(mockedConnection.prepareStatement(anyString())).thenReturn(mockedPreparedStatement);
+        when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
+        when(mockedResultSet.next()).thenReturn(false);
+
+        UserDTO result = sut.getUserByToken("testtoken");
+
+        // Verify that the correct methods are called
+        assertEquals(null, result);
+    }
+
+    @Test
+    void unsuccesfullyGetUserByTokenGetException() throws SQLException{
+        when(mockedConnectionManager.ConnectionStart()).thenReturn(mockedConnection);
+        when(mockedConnection.prepareStatement(anyString())).thenReturn(mockedPreparedStatement);
+        when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
+        when(mockedResultSet.next()).thenReturn(false);
+
+        UserDTO result = sut.getUserByToken("testtoken");
+
+        // Verify that the correct methods are called
+        assertEquals(null, result);
     }
 }
