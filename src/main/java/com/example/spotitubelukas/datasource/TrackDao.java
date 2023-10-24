@@ -45,34 +45,6 @@ public class TrackDao {
         }
         return new TrackResponseDTO(tracks);
     }
-
-    public TrackDTO getTrack(int trackId){
-        TrackDTO track = null;
-
-        try {
-            Connection connection = connectionManager.ConnectionStart();
-            PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_GET_TRACK);
-
-            selectStatementTrack.setInt(1, trackId);
-
-            ResultSet resultSet = selectStatementTrack.executeQuery();
-            while (resultSet.next()){
-                track = new TrackDTO(resultSet.getInt("id"),
-                        resultSet.getString("title"), resultSet.getString("performer"),
-                        resultSet.getInt("duration"), resultSet.getString("album"),
-                        resultSet.getInt("playcount"), resultSet.getDate("publicationDate").toLocalDate(),
-                        resultSet.getString("description"),
-                        resultSet.getBoolean("offlineAvailable"));
-            }
-
-            selectStatementTrack.close();
-            connection.close();
-        } catch (SQLException e) {
-            logger.severe("Error communicating with database: " + e);
-        }
-        return track;
-    }
-
     @Inject
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
@@ -81,6 +53,4 @@ public class TrackDao {
     private static final String SQL_GET_AVAILABLE_TRACK = "SELECT t.* FROM spotitube.tracks t LEFT JOIN" +
             " spotitube.tracksinplaylists tp ON t.id = tp.trackid AND" +
             " tp.playlistid = ? WHERE tp.trackid IS NULL";
-
-    private static final String SQL_GET_TRACK = "SELECT * FROM tracks WHERE id = ?";
 }
