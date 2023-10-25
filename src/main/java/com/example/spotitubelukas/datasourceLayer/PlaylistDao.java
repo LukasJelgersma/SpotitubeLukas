@@ -1,7 +1,6 @@
-package com.example.spotitubelukas.datasource;
+package com.example.spotitubelukas.datasourceLayer;
 
-import com.example.spotitubelukas.datasource.util.ConnectionManager;
-import com.example.spotitubelukas.datasource.util.DatabaseProperties;
+import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;

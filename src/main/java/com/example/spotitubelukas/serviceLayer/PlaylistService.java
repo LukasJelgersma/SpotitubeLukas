@@ -1,6 +1,6 @@
 package com.example.spotitubelukas.serviceLayer;
 
-import com.example.spotitubelukas.datasource.PlaylistDao;
+import com.example.spotitubelukas.datasourceLayer.PlaylistDao;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;

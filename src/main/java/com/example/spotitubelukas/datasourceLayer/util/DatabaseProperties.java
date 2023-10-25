@@ -1,8 +1,7 @@
-package com.example.spotitubelukas.datasource.util;
+package com.example.spotitubelukas.datasourceLayer.util;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
-import jakarta.persistence.Access;
 
 import java.io.IOException;
 import java.util.Properties;

@@ -1,7 +1,7 @@
 package DAOs;
 
-import com.example.spotitubelukas.datasource.TrackDao;
-import com.example.spotitubelukas.datasource.util.ConnectionManager;
+import com.example.spotitubelukas.datasourceLayer.TrackDao;
+import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;

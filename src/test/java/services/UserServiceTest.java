@@ -1,6 +1,6 @@
 package services;
 
-import com.example.spotitubelukas.datasource.UserDao;
+import com.example.spotitubelukas.datasourceLayer.UserDao;
 import com.example.spotitubelukas.exceptions.InvalidCredentialsException;
 import com.example.spotitubelukas.exceptions.UserNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;

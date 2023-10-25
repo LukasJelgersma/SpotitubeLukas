@@ -1,7 +1,7 @@
 package DAOs;
 
-import com.example.spotitubelukas.datasource.PlaylistDao;
-import com.example.spotitubelukas.datasource.util.ConnectionManager;
+import com.example.spotitubelukas.datasourceLayer.PlaylistDao;
+import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
@@ -49,7 +49,18 @@ public class PlaylistDaoTest {
         this.mockedUserToken = "testtoken";
         this.mockedUserDTO = new UserDTO("testuser", "testpassword", "testusername", mockedUserToken);
         this.mockedPlaylistDTO = new PlaylistDTO(1, "testplaylist", true);
-        this.mockedTrackDTO = new TrackDTO(1, "testtitle", "testperformer", 1, "testalbum", 1, testDate, "testdescription", true);
+        this.mockedTrackDTO = new TrackDTO();
+
+        mockedTrackDTO.setId(1);
+        mockedTrackDTO.setAlbum("testalbum");
+        mockedTrackDTO.setDescription("testdescription");
+        mockedTrackDTO.setDuration(1);
+        mockedTrackDTO.setOfflineAvailable(true);
+        mockedTrackDTO.setPerformer("testperformer");
+        mockedTrackDTO.setPlaycount(1);
+        mockedTrackDTO.setPublicationDate(testDate);
+        mockedTrackDTO.setTitle("testtitle");
+
         this.mockedPlaylistResponseDTO = new PlaylistResponseDTO();
         this.mockedTracks = new ArrayList<>();
         this.mockedPlaylists = new ArrayList<>();
@@ -93,6 +104,17 @@ public class PlaylistDaoTest {
         verify(mockedConnection, times(1)).prepareStatement(anyString());
 
         assertEquals(mockedTracks.getClass(), result.getClass());
+        assertEquals(mockedTracks.get(0).getClass(), result.get(0).getClass());
+        assertEquals(mockedTracks.get(0).getId(), 1);
+        assertEquals(mockedTracks.get(0).getTitle(), "testtitle");
+        assertEquals(mockedTracks.get(0).getPerformer(), "testperformer");
+        assertEquals(mockedTracks.get(0).getDuration(), 1);
+        assertEquals(mockedTracks.get(0).getAlbum(), "testalbum");
+        assertEquals(mockedTracks.get(0).getPlaycount(), 1);
+        assertEquals(mockedTracks.get(0).getPublicationDate(), testDate);
+        assertEquals(mockedTracks.get(0).getDescription(), "testdescription");
+        assertEquals(mockedTracks.get(0).isOfflineAvailable(), true);
+
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.example.spotitubelukas.datasource.util;
+package com.example.spotitubelukas.datasourceLayer.util;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;

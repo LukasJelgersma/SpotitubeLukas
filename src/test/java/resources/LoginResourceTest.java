@@ -5,14 +5,9 @@ import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
 import com.example.spotitubelukas.resourceLayer.resources.LoginResource;
 import com.example.spotitubelukas.serviceLayer.UserService;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +19,6 @@ public class LoginResourceTest {
     private LoginResource sut;
     private UserService mockedUserService;
     private UserRequestDTO mockedUserRequestDTO;
-
 
     @BeforeEach
     void setup(){
@@ -51,8 +45,6 @@ public class LoginResourceTest {
         Response response = sut.login(mockedUserRequestDTO);
 
         // Assert
-        //assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        // Voor alleen de UserResponseDTO
         UserResponseDTO userResponse = (UserResponseDTO) response.getEntity();
         assertEquals(returnWaardeFixture, userResponse);
     }

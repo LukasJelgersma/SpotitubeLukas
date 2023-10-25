@@ -1,8 +1,7 @@
 package DAOs;
 
-import com.example.spotitubelukas.datasource.UserDao;
-import com.example.spotitubelukas.datasource.util.ConnectionManager;
-import com.example.spotitubelukas.datasource.util.DatabaseProperties;
+import com.example.spotitubelukas.datasourceLayer.UserDao;
+import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
