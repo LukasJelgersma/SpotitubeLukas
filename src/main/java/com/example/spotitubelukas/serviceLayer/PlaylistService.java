@@ -13,16 +13,15 @@ import jakarta.inject.Inject;
 
 @Default
 @ApplicationScoped
-public class PlaylistService {
+public class PlaylistService implements com.example.spotitubelukas.resourceLayer.IPlaylistService {
 
     private PlaylistDao playlistDao;
-
-    private TrackService trackService;
 
 
     public PlaylistService() {
     }
 
+    @Override
     public PlaylistResponseDTO getPlaylists(UserDTO user) {
 
 
@@ -31,6 +30,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
+    @Override
     public PlaylistResponseDTO addPlaylist(UserDTO user, PlaylistDTO playlistDTO) {
         String username = user.getUser();
 
@@ -39,6 +39,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
+    @Override
     public PlaylistResponseDTO deletePlaylist(UserDTO user, int id) {
         String username = user.getUser();
 
@@ -47,6 +48,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
+    @Override
     public PlaylistResponseDTO editPlaylist(UserDTO user, int id, PlaylistDTO playlistDTO) {
         String username = user.getUser();
 
@@ -55,6 +57,7 @@ public class PlaylistService {
         return playlistDao.getPlaylistResponse(username);
     }
 
+    @Override
     public TrackResponseDTO addTrackToPlaylist(int id, TrackDTO trackDTO) {
 
         playlistDao.addTrackToPlaylist(id, trackDTO);
@@ -62,6 +65,7 @@ public class PlaylistService {
         return new TrackResponseDTO(playlistDao.getAllTracks(id));
     }
 
+    @Override
     public TrackResponseDTO removeTrackFromPlaylist(int trackId, int playlistId) {
 
         playlistDao.removeTrackFromPlaylist(trackId, playlistId);
@@ -69,17 +73,15 @@ public class PlaylistService {
         return new TrackResponseDTO(playlistDao.getAllTracks(playlistId));
     }
 
+    @Override
     public PlaylistDTO getPlaylistById(int id, UserDTO userDTO) {
         return (playlistDao.getPlaylistById(id, userDTO.getUser()));
     }
+
 
     @Inject
     public void setPlaylistDao(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
 
-    @Inject
-    public void setTrackService(TrackService trackService) {
-        this.trackService = trackService;
-    }
 }

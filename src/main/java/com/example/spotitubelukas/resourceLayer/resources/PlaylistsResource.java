@@ -1,5 +1,6 @@
 package com.example.spotitubelukas.resourceLayer.resources;
 
+import com.example.spotitubelukas.resourceLayer.IPlaylistService;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
@@ -14,7 +15,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/playlists")
 public class PlaylistsResource {
 
-    private PlaylistService playlistService;
+    private IPlaylistService playlistService;
 
     private UserService userService;
 
