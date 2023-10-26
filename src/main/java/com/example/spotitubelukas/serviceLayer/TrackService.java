@@ -1,14 +1,12 @@
 package com.example.spotitubelukas.serviceLayer;
 
-import com.example.spotitubelukas.datasource.PlaylistDao;
-import com.example.spotitubelukas.datasource.TrackDao;
+import com.example.spotitubelukas.datasourceLayer.PlaylistDao;
+import com.example.spotitubelukas.datasourceLayer.TrackDao;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
-
-import java.sql.Connection;
 
 @Default
 @ApplicationScoped

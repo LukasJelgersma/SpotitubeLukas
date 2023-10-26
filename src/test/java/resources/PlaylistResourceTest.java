@@ -1,6 +1,5 @@
 package resources;
 
-import com.example.spotitubelukas.exceptions.PlaylistNotAvailableException;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
@@ -11,7 +10,6 @@ import com.example.spotitubelukas.serviceLayer.PlaylistService;
 import com.example.spotitubelukas.serviceLayer.TrackService;
 import com.example.spotitubelukas.serviceLayer.UserService;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;

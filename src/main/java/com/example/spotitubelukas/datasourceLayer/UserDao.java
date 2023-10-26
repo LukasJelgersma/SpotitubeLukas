@@ -1,9 +1,11 @@
-package com.example.spotitubelukas.datasource;
+package com.example.spotitubelukas.datasourceLayer;
 
-import com.example.spotitubelukas.datasource.util.DatabaseProperties;
+import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
+import com.example.spotitubelukas.datasourceLayer.util.DatabaseProperties;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 
 import java.sql.*;
 import java.util.logging.Logger;
@@ -13,17 +15,17 @@ import java.util.logging.Logger;
 public class UserDao {
 
     private Logger logger = Logger.getLogger(getClass().getName());
-
     DatabaseProperties databaseProperties = new DatabaseProperties();
+    private ConnectionManager connectionManager;
 
     public void UserDao() {
 
     }
 
     public void setUserToken(UserDTO user) {
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
+
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement updateStatement = connection.prepareStatement(SQL_UPDATE_TOKEN);
 
             updateStatement.setString(1, user.getUsertoken());
@@ -47,9 +49,8 @@ public class UserDao {
 
     public UserDTO getUserCredentials(String username) {
         UserDTO user = null;
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatement = connection.prepareStatement(SQL_SELECT_USER_ALL);
 
             selectStatement.setString(1, username);
@@ -70,10 +71,9 @@ public class UserDao {
     }
 
     public UserDTO getUserByToken(String token){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         UserDTO user = null;
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatement = connection.prepareStatement(SQL_SELECT_USER_BY_TOKEN);
 
             selectStatement.setString(1, token);
@@ -92,26 +92,10 @@ public class UserDao {
         return user;
     }
 
-    public void addUser(UserDTO user) {
-        Connection connection;
-        try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
-            PreparedStatement addStatement = connection.prepareStatement(SQL_INSERT);
-
-            addStatement.setString(1, user.getUser());
-            addStatement.setString(2, user.getPassword());
-
-            addStatement.execute();
-
-            addStatement.close();
-            connection.close();
-        } catch (SQLException e) {
-            logger.severe("Error communicating with database:" + e);
-
-        }
+    @Inject
+    public void setConnectionManager(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
     }
-
-    private static final String SQL_INSERT = "INSERT INTO users (user, password) VALUES (?,?)";
     private static final String SQL_UPDATE_TOKEN = "UPDATE users SET usertoken = ? WHERE user = ?";
     private static final String SQL_SELECT_USER_ALL = "SELECT user, password, name, usertoken FROM users WHERE user = ?";
     private static final String SQL_SELECT_USER_BY_TOKEN = "SELECT user, password, name, usertoken FROM users WHERE usertoken = ?";

@@ -1,11 +1,12 @@
-package com.example.spotitubelukas.datasource;
+package com.example.spotitubelukas.datasourceLayer;
 
-import com.example.spotitubelukas.datasource.util.DatabaseProperties;
+import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PlaylistDao {
     private Logger logger = Logger.getLogger(getClass().getName());
-    DatabaseProperties databaseProperties = new DatabaseProperties();
+    private ConnectionManager connectionManager;
 
     public PlaylistDao() {
     }
@@ -23,9 +24,8 @@ public class PlaylistDao {
     public PlaylistResponseDTO getPlaylistResponse(String username){
         ArrayList<PlaylistDTO> playlists = new ArrayList<>();
         int totalDuration = 0;
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatement = connection.prepareStatement(SQL_SELECT_PLAYLIST_ALL);
 
             ResultSet resultSet = selectStatement.executeQuery();
@@ -55,10 +55,9 @@ public class PlaylistDao {
     }
 
     public ArrayList<TrackDTO> getAllTracks(int playlistId){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         ArrayList<TrackDTO> tracks = new ArrayList<>();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectStatementTrack = connection.prepareStatement(SQL_SELECT_TRACKS_ALL);
 
             selectStatementTrack.setInt(1, playlistId);
@@ -83,10 +82,9 @@ public class PlaylistDao {
     }
 
     public PlaylistDTO getPlaylistById(int id, String username){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         PlaylistDTO playlistDTO = null;
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement selectPlaylistStatement = connection.prepareStatement(SQL_SELECT_PLAYLIST_BY_ID);
 
             selectPlaylistStatement.setInt(1, id);
@@ -111,9 +109,8 @@ public class PlaylistDao {
     }
 
     public void addPlaylist(String username, PlaylistDTO playlistDTO){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement insertStatement = connection.prepareStatement(SQL_INSERT_PLAYLIST);
 
             insertStatement.setString(1, playlistDTO.getName());
@@ -130,9 +127,8 @@ public class PlaylistDao {
     }
 
     public void deletePlaylist(String username, int id){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement deleteStatement = connection.prepareStatement(SQL_DELETE_PLAYLIST);
 
             deleteStatement.setString(1, username);
@@ -149,9 +145,8 @@ public class PlaylistDao {
     }
 
     public void editPlaylist(String username, int id, PlaylistDTO playlistDTO){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement deleteStatement = connection.prepareStatement(SQL_EDIT_PLAYLIST);
 
             deleteStatement.setString(1, playlistDTO.getName());
@@ -168,9 +163,8 @@ public class PlaylistDao {
     }
 
     public void addTrackToPlaylist(int id, TrackDTO trackDTO){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement insertStatement = connection.prepareStatement(SQL_ADD_TRACK_PLAYLIST);
 
             insertStatement.setInt(1, trackDTO.getId());
@@ -186,9 +180,8 @@ public class PlaylistDao {
     }
 
     public void removeTrackFromPlaylist(int trackId, int playlistId){
-        Connection connection;
+        Connection connection = connectionManager.ConnectionStart();
         try {
-            connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement insertStatement = connection.prepareStatement(SQL_REMOVE_TRACK_PLAYLIST);
 
             insertStatement.setInt(1, trackId);
@@ -201,6 +194,11 @@ public class PlaylistDao {
         } catch (SQLException e) {
             logger.severe("Error communicating with database:" + e);
         }
+    }
+
+    @Inject
+    public void setConnectionManager(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
     }
 
     private static final String SQL_SELECT_PLAYLIST_ALL = "SELECT * FROM playlists";

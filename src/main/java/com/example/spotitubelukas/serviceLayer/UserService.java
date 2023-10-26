@@ -1,6 +1,6 @@
 package com.example.spotitubelukas.serviceLayer;
 
-import com.example.spotitubelukas.datasource.UserDao;
+import com.example.spotitubelukas.datasourceLayer.UserDao;
 import com.example.spotitubelukas.exceptions.InvalidCredentialsException;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
@@ -11,10 +11,7 @@ import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.Optional;
 
 @Default
 @ApplicationScoped
