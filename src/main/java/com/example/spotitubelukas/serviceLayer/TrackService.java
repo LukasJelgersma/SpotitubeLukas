@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 
 @Default
 @ApplicationScoped
-public class TrackService {
+public class TrackService implements com.example.spotitubelukas.resourceLayer.ITrackService {
     private TrackDao trackDao;
     private PlaylistDao playlistDao;
 
@@ -18,10 +18,12 @@ public class TrackService {
 
     }
 
+    @Override
     public TrackResponseDTO getPlaylistTracks(PlaylistDTO playlistDTO){
         return new TrackResponseDTO(playlistDao.getAllTracks(playlistDTO.getId()));
     }
 
+    @Override
     public TrackResponseDTO getAllAvailableTracks(PlaylistDTO playlistDTO){
 
         return trackDao.getAvailableTracks(playlistDTO.getId());

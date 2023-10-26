@@ -15,17 +15,19 @@ import java.util.UUID;
 
 @Default
 @ApplicationScoped
-public class UserService {
+public class UserService implements com.example.spotitubelukas.resourceLayer.IUserService {
     private UserDao userDao;
 
     public UserService() {
 
     }
 
+    @Override
     public UserDTO getUserByToken(String token) {
         return userDao.getUserByToken(token);
     }
 
+    @Override
     public UserResponseDTO authUser(UserRequestDTO userRequestDTO) {
         UserDTO user = userDao.getUserCredentials(userRequestDTO.getUser());
         if (user == null) {

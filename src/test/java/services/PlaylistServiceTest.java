@@ -23,7 +23,6 @@ public class PlaylistServiceTest {
     private ArrayList<TrackDTO> mockedTracks = new ArrayList<>();
     LocalDate testDate = LocalDate.of(2021, 1, 1);
     private PlaylistService sut;
-    private TrackService mockedTrackService;
     private PlaylistDao mockedPlaylistDao;
     private PlaylistResponseDTO mockedPlaylistResponseDTO;
     private TrackResponseDTO mockedTrackResponseDTO;
@@ -35,9 +34,6 @@ public class PlaylistServiceTest {
     @BeforeEach
     void setup() {
         this.sut = new PlaylistService();
-
-        this.mockedTrackService = mock(TrackService.class);
-        this.sut.setTrackService(mockedTrackService);
 
         this.mockedPlaylistDao = mock(PlaylistDao.class);
         this.sut.setPlaylistDao(mockedPlaylistDao);
