@@ -1,14 +1,14 @@
 package resources;
 
+import com.example.spotitubelukas.resourceLayer.IPlaylistService;
+import com.example.spotitubelukas.resourceLayer.ITrackService;
+import com.example.spotitubelukas.resourceLayer.IUserService;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import com.example.spotitubelukas.resourceLayer.resources.PlaylistsResource;
-import com.example.spotitubelukas.serviceLayer.PlaylistService;
-import com.example.spotitubelukas.serviceLayer.TrackService;
-import com.example.spotitubelukas.serviceLayer.UserService;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,9 @@ import static org.mockito.Mockito.*;
 
 public class PlaylistResourceTest {
     private PlaylistsResource sut;
-    private PlaylistService mockedPlaylistService;
-    private UserService mockedUserService;
-    private TrackService mockedTrackService;
+    private IPlaylistService mockedIPlaylistService;
+    private IUserService mockedIUserService;
+    private ITrackService mockedITrackService;
     private PlaylistDTO mockedPlaylistDTO;
     private TrackDTO mockedTrackDTO;
     private TrackResponseDTO mockedTrackResponseDTO;
@@ -36,14 +36,14 @@ public class PlaylistResourceTest {
     public void setup() {
         this.sut = new PlaylistsResource();
 
-        this.mockedPlaylistService = mock(PlaylistService.class);
-        this.sut.setPlaylistService(mockedPlaylistService);
+        this.mockedIPlaylistService = mock(IPlaylistService.class);
+        this.sut.setPlaylistService(mockedIPlaylistService);
 
-        this.mockedUserService = mock(UserService.class);
-        this.sut.setUserService(mockedUserService);
+        this.mockedIUserService = mock(IUserService.class);
+        this.sut.setUserService(mockedIUserService);
 
-        this.mockedTrackService = mock(TrackService.class);
-        this.sut.setTrackService(mockedTrackService);
+        this.mockedITrackService = mock(ITrackService.class);
+        this.sut.setTrackService(mockedITrackService);
 
         this.mockedTrackDTO = mock(TrackDTO.class);
         this.mockedPlaylistDTO = mock(PlaylistDTO.class);
@@ -70,8 +70,8 @@ public class PlaylistResourceTest {
     void getPlaylistsSuccesful() {
         // Arrange
         // Mock service
-        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
-        when(mockedPlaylistService.getPlaylists(mockedUserDTO)).thenReturn(mockedPlaylistResponseDTO);
+        when(mockedIUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedIPlaylistService.getPlaylists(mockedUserDTO)).thenReturn(mockedPlaylistResponseDTO);
 
         // Act
         Response result = sut.getPlaylists(testtoken);
@@ -87,8 +87,8 @@ public class PlaylistResourceTest {
         // Arrange
 
         // Mock service
-        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
-        when(mockedPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenReturn(mockedPlaylistResponseDTO);
+        when(mockedIUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedIPlaylistService.addPlaylist(mockedUserDTO, mockedPlaylistDTO)).thenReturn(mockedPlaylistResponseDTO);
 
         // Act
         Response result = sut.addPlaylist(testtoken, mockedPlaylistDTO);
@@ -103,8 +103,8 @@ public class PlaylistResourceTest {
         // Arrange
 
         // Mock service
-        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
-        when(mockedPlaylistService.deletePlaylist(mockedUserDTO, testPlaylistId)).thenReturn(mockedPlaylistResponseDTO);
+        when(mockedIUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedIPlaylistService.deletePlaylist(mockedUserDTO, testPlaylistId)).thenReturn(mockedPlaylistResponseDTO);
 
 
         // Act
@@ -120,8 +120,8 @@ public class PlaylistResourceTest {
         // Arrange
 
         // Mock service
-        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
-        when(mockedPlaylistService.editPlaylist(mockedUserDTO, testPlaylistId, mockedPlaylistDTO)).thenReturn(mockedPlaylistResponseDTO);
+        when(mockedIUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedIPlaylistService.editPlaylist(mockedUserDTO, testPlaylistId, mockedPlaylistDTO)).thenReturn(mockedPlaylistResponseDTO);
 
         // Act
         Response result = sut.editPlaylist(testtoken, testPlaylistId, mockedPlaylistDTO);
@@ -136,9 +136,9 @@ public class PlaylistResourceTest {
         // Arrange
 
         // Mock service
-        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
-        when(mockedPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
-        when(mockedPlaylistService.addTrackToPlaylist(testPlaylistId, mockedTrackDTO)).thenReturn(mockedTrackResponseDTO);
+        when(mockedIUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedIPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
+        when(mockedIPlaylistService.addTrackToPlaylist(testPlaylistId, mockedTrackDTO)).thenReturn(mockedTrackResponseDTO);
 
         // Act
         Response result = sut.addTrack(testtoken, testPlaylistId, mockedTrackDTO);
@@ -153,7 +153,7 @@ public class PlaylistResourceTest {
         // Arrange
 
         // Mock service
-        when(mockedPlaylistService.removeTrackFromPlaylist(mockedTrackDTO.getId(), testPlaylistId)).thenReturn(mockedTrackResponseDTO);
+        when(mockedIPlaylistService.removeTrackFromPlaylist(mockedTrackDTO.getId(), testPlaylistId)).thenReturn(mockedTrackResponseDTO);
 
         // Act
         Response result = sut.deleteTrack(mockedTrackDTO.getId(), testPlaylistId);
@@ -168,9 +168,9 @@ public class PlaylistResourceTest {
         // Arrange
 
         // Mock service
-        when(mockedUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
-        when(mockedPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
-        when(mockedTrackService.getPlaylistTracks(mockedPlaylistDTO)).thenReturn(mockedTrackResponseDTO);
+        when(mockedIUserService.getUserByToken(testtoken)).thenReturn(mockedUserDTO);
+        when(mockedIPlaylistService.getPlaylistById(testPlaylistId, mockedUserDTO)).thenReturn(mockedPlaylistDTO);
+        when(mockedITrackService.getPlaylistTracks(mockedPlaylistDTO)).thenReturn(mockedTrackResponseDTO);
 
         // Act
         Response result = sut.getTracks(testtoken, testPlaylistId);
