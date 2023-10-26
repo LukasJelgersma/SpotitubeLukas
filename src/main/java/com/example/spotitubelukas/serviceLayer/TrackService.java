@@ -2,6 +2,7 @@ package com.example.spotitubelukas.serviceLayer;
 
 import com.example.spotitubelukas.datasourceLayer.PlaylistDao;
 import com.example.spotitubelukas.datasourceLayer.TrackDao;
+import com.example.spotitubelukas.resourceLayer.ITrackService;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,7 +11,7 @@ import jakarta.inject.Inject;
 
 @Default
 @ApplicationScoped
-public class TrackService implements com.example.spotitubelukas.resourceLayer.ITrackService {
+public class TrackService implements ITrackService {
     private TrackDao trackDao;
     private PlaylistDao playlistDao;
 
@@ -18,11 +19,21 @@ public class TrackService implements com.example.spotitubelukas.resourceLayer.IT
 
     }
 
+    /**
+     * Get all tracks from playlist
+     * @param playlistDTO
+     * @return TrackResponseDTO
+     */
     @Override
     public TrackResponseDTO getPlaylistTracks(PlaylistDTO playlistDTO){
         return new TrackResponseDTO(playlistDao.getAllTracks(playlistDTO.getId()));
     }
 
+    /**
+     * Get all available tracks from playlist
+     * @param playlistDTO
+     * @return TrackResponseDTO
+     */
     @Override
     public TrackResponseDTO getAllAvailableTracks(PlaylistDTO playlistDTO){
 

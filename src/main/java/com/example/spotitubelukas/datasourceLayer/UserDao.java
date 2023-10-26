@@ -14,11 +14,10 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class UserDao {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
-    DatabaseProperties databaseProperties = new DatabaseProperties();
+    private final Logger logger = Logger.getLogger(getClass().getName());
     private ConnectionManager connectionManager;
 
-    public void UserDao() {
+    public UserDao() {
 
     }
 

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @Default
 @ApplicationScoped
 public class TrackDao {
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     private ConnectionManager connectionManager;
 

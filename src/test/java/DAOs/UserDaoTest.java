@@ -11,15 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UserDaoTest {
 
     private UserDao sut;
     private UserDTO mockedUserDTO;
-    private String mockedUserToken;
     private PreparedStatement mockedPreparedStatement;
     private ResultSet mockedResultSet;
     private Connection mockedConnection;
@@ -34,7 +32,7 @@ public class UserDaoTest {
         this.mockedPreparedStatement = mock(PreparedStatement.class);
         this.mockedResultSet = mock(ResultSet.class);
 
-        this.mockedUserToken = "testtoken";
+        String mockedUserToken = "testtoken";
         this.mockedUserDTO = new UserDTO("testuser", "testpassword", "testusername", mockedUserToken);
 
         sut.setConnectionManager(mockedConnectionManager);
@@ -113,7 +111,7 @@ public class UserDaoTest {
         UserDTO result = sut.getUserByToken("testtoken");
 
         // Verify that the correct methods are called
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
@@ -126,6 +124,6 @@ public class UserDaoTest {
         UserDTO result = sut.getUserByToken("testtoken");
 
         // Verify that the correct methods are called
-        assertEquals(null, result);
+        assertNull(result);
     }
 }

@@ -20,7 +20,7 @@ public class UserServiceTest {
 
     private UserService sut;
     private UserDao mockedUserDao;
-    private String testtoken = "testtoken1";
+    private final String testtoken = "testtoken1";
     private UserRequestDTO mockedUserRequestDTO;
     private UserDTO mockedUserDTO;
 

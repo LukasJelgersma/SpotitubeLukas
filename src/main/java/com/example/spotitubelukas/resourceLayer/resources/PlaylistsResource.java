@@ -1,6 +1,8 @@
 package com.example.spotitubelukas.resourceLayer.resources;
 
 import com.example.spotitubelukas.resourceLayer.IPlaylistService;
+import com.example.spotitubelukas.resourceLayer.ITrackService;
+import com.example.spotitubelukas.resourceLayer.IUserService;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
@@ -17,9 +19,9 @@ public class PlaylistsResource {
 
     private IPlaylistService playlistService;
 
-    private UserService userService;
+    private IUserService userService;
 
-    private TrackService trackService;
+    private ITrackService trackService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -102,17 +104,17 @@ public class PlaylistsResource {
     }
 
     @Inject
-    public void setUserService(UserService userService){
+    public void setUserService(IUserService userService){
         this.userService = userService;
     }
 
     @Inject
-    public void setPlaylistService(PlaylistService playlistService){
+    public void setPlaylistService(IPlaylistService playlistService){
         this.playlistService = playlistService;
     }
 
     @Inject
-    public void setTrackService(TrackService trackService){
+    public void setTrackService(ITrackService trackService){
         this.trackService = trackService;
     }
 }

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class PlaylistDaoTest {
@@ -34,8 +34,8 @@ public class PlaylistDaoTest {
     private String mockedUserToken;
     private ArrayList<TrackDTO> mockedTracks;
     private ArrayList<PlaylistDTO> mockedPlaylists;
-    private LocalDate testDate = LocalDate.of(2021, 1, 1);
-    private String testDateString = "2021-1-1";
+    private final LocalDate testDate = LocalDate.of(2021, 1, 1);
+    private final String testDateString = "2021-1-1";
 
     @BeforeEach
     void setup() {
@@ -113,7 +113,7 @@ public class PlaylistDaoTest {
         assertEquals(mockedTracks.get(0).getPlaycount(), 1);
         assertEquals(mockedTracks.get(0).getPublicationDate(), testDate);
         assertEquals(mockedTracks.get(0).getDescription(), "testdescription");
-        assertEquals(mockedTracks.get(0).isOfflineAvailable(), true);
+        assertTrue(mockedTracks.get(0).isOfflineAvailable());
 
     }
 

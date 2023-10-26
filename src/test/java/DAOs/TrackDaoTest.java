@@ -2,6 +2,7 @@ package DAOs;
 
 import com.example.spotitubelukas.datasourceLayer.TrackDao;
 import com.example.spotitubelukas.datasourceLayer.util.ConnectionManager;
+import com.example.spotitubelukas.datasourceLayer.util.DatabaseProperties;
 import com.example.spotitubelukas.resourceLayer.dto.PlaylistDTO;
 import com.example.spotitubelukas.resourceLayer.dto.TrackDTO;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
@@ -17,7 +18,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class TrackDaoTest {
@@ -30,15 +30,18 @@ public class TrackDaoTest {
     private ResultSet mockedResultSet;
     private Connection mockedConnection;
     private ConnectionManager mockedConnectionManager;
+    private DatabaseProperties mockedDatabaseProperties;
     private ArrayList<TrackDTO> mockedTracks;
     private ArrayList<PlaylistDTO> mockedPlaylists;
-    private LocalDate testDate = LocalDate.of(2021, 1, 1);
-    private String testDateString = "2021-1-1";
+    private final LocalDate testDate = LocalDate.of(2021, 1, 1);
+    private final String testDateString = "2021-1-1";
 
     @BeforeEach
     void setup(){
         this.sut = new TrackDao();
         this.mockedConnectionManager = mock(ConnectionManager.class);
+        this.mockedDatabaseProperties = mock(DatabaseProperties.class);
+        mockedConnectionManager.setDatabaseProperties(mockedDatabaseProperties);
 
         this.mockedConnection = mock(Connection.class);
         this.mockedPreparedStatement = mock(PreparedStatement.class);

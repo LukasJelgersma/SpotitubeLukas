@@ -29,7 +29,6 @@ public class LoginResourceTest {
 
         this.mockedUserRequestDTO = new UserRequestDTO("lukas", "LukasGaming123");
 
-        // Gebruik Mockito om een instantie te maken
         MockitoAnnotations.openMocks(this);
     }
 
@@ -58,9 +57,7 @@ public class LoginResourceTest {
         when(mockedUserService.authUser(mockedUserRequestDTO)).thenThrow(returnWaardeFixture);
 
         // Throw en Assert
-        assertThrows(UserNotAvailableException.class, () -> {
-            sut.login(mockedUserRequestDTO);
-        });
+        assertThrows(UserNotAvailableException.class, () -> sut.login(mockedUserRequestDTO));
     }
 
 }

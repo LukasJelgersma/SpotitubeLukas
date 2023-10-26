@@ -1,7 +1,6 @@
 package com.example.spotitubelukas.resourceLayer.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class TrackDTO {
     private int id;

@@ -12,15 +12,14 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class DatabaseProperties {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
-
-    private Properties properties;
+    private final Properties properties;
 
     public DatabaseProperties() {
         properties = new Properties();
         try {
             properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
         } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
             logger.log(Level.SEVERE, "Can't acces property file database.properties", e);
         }
     }

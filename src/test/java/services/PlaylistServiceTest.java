@@ -7,7 +7,6 @@ import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.PlaylistResponseDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.TrackResponseDTO;
 import com.example.spotitubelukas.serviceLayer.PlaylistService;
-import com.example.spotitubelukas.serviceLayer.TrackService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +18,9 @@ import static org.mockito.Mockito.*;
 
 public class PlaylistServiceTest {
 
-    private ArrayList<PlaylistDTO> mockedPlaylists = new ArrayList<>();
-    private ArrayList<TrackDTO> mockedTracks = new ArrayList<>();
-    LocalDate testDate = LocalDate.of(2021, 1, 1);
+    private final ArrayList<PlaylistDTO> mockedPlaylists = new ArrayList<>();
+    private final ArrayList<TrackDTO> mockedTracks = new ArrayList<>();
+    final LocalDate testDate = LocalDate.of(2021, 1, 1);
     private PlaylistService sut;
     private PlaylistDao mockedPlaylistDao;
     private PlaylistResponseDTO mockedPlaylistResponseDTO;

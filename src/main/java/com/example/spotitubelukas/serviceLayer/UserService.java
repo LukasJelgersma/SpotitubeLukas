@@ -2,6 +2,7 @@ package com.example.spotitubelukas.serviceLayer;
 
 import com.example.spotitubelukas.datasourceLayer.UserDao;
 import com.example.spotitubelukas.exceptions.InvalidCredentialsException;
+import com.example.spotitubelukas.resourceLayer.IUserService;
 import com.example.spotitubelukas.resourceLayer.dto.UserDTO;
 import com.example.spotitubelukas.resourceLayer.dto.request.UserRequestDTO;
 import com.example.spotitubelukas.resourceLayer.dto.response.UserResponseDTO;
@@ -15,18 +16,28 @@ import java.util.UUID;
 
 @Default
 @ApplicationScoped
-public class UserService implements com.example.spotitubelukas.resourceLayer.IUserService {
+public class UserService implements IUserService {
     private UserDao userDao;
 
     public UserService() {
 
     }
 
+    /**
+     * Get user by token
+     * @param token
+     * @return UserDTO
+     */
     @Override
     public UserDTO getUserByToken(String token) {
         return userDao.getUserByToken(token);
     }
 
+    /**
+     * Authenticate user
+     * @param userRequestDTO
+     * @return UserResponseDTO
+     */
     @Override
     public UserResponseDTO authUser(UserRequestDTO userRequestDTO) {
         UserDTO user = userDao.getUserCredentials(userRequestDTO.getUser());

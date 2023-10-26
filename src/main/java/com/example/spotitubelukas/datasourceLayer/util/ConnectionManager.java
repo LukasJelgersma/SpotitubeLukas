@@ -23,14 +23,6 @@ public class ConnectionManager {
         return connection;
     }
 
-    public void ConnectionClose() {
-        try {
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Inject
     public void setDatabaseProperties(DatabaseProperties databaseProperties) {
         this.databaseProperties = databaseProperties;

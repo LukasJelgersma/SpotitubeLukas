@@ -31,8 +31,8 @@ public class TrackResourceTest {
     private UserDTO mockedUserDTO;
     private PlaylistDTO mockedPlaylistDTO;
     private PlaylistResponseDTO mockedPlaylistResponseDTO;
-    private String testtoken = "testtoken1";
-    private int testPlaylistId = 1;
+    private final String testtoken = "testtoken1";
+    private final int testPlaylistId = 1;
 
     @BeforeEach
     public void setUp() {
